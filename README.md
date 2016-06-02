@@ -35,4 +35,4 @@ stvli@ucdavis.edu,Li,Steven
 
 copyright © 2016 Zhiying Li
 
-**Since this is a course assignment, it is not open sourced. All the codes in this repository are only aviliable to be viewed, edited, discussed, printed and transfered by two authors and course instructors. Anyone else are restricted to do so without the constents of two authors.**
+**Since this is a course assignment, it is not open sourced. All the codes in this repository are only aviliable to be viewed, edited, discussed, printed and transfered by author and course instructors. Anyone else are restricted to do so without the constents of two authors.**
