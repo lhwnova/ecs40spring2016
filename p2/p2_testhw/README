@@ -1,0 +1,9 @@
+The testhw and the Testing directory are now available for use.
+Copy testhw to one of your own directories.
+There is no need to copy the Testing directory.
+testhw takes only one argument--the directory that holds your shell scripts.
+testhw copies the entire Testing directory into the directory you specify.
+It places the outputs of each test in the Testing directory.
+It places the results of each test in results.txt in the directroy you specify.
+
+Sean

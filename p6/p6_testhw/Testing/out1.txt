@@ -1,0 +1,35 @@
+Size: 0
+Capacity: 0
+Insert 13 : 13
+Size: 1
+Capacity: 1
+Insert 8 : 8
+Size: 2
+Capacity: 2
+Insert 2 : 2
+Size: 3
+Capacity: 4
+Insert 9 : 9
+Capacity: 4
+Insert 4 : 4
+Capacity: 8
+Find 13 : 2 4 8 9 13
+Read [2] : 8
+Read [0] : 2
+Virtual seg fault.
+Read [6] : 2
+Virtual seg fault.
+Read [5] : 2
+Virtual seg fault.
+Read [-1] : 2
+Erase 8 : 9
+Size: 4
+Find 9 : 2 4 9
+Erase 2 : 4
+Size: 3
+Erase 11 : NULL
+Find 2 : NULL
+Find 13 : 4 9 13
+Find 9 : 4 9
+Size: 3
+Capacity: 8

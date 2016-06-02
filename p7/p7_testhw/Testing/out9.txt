@@ -1,0 +1,101 @@
+==28709== Memcheck, a memory error detector
+==28709== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==28709== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==28709== Command: templates.out /home/ssdavis/40/p7/Testing/file9.txt
+==28709== 
+
+Assignment operator:
+11 11 Short test.
+11 11 Short test.
+11 11 583604611614616532616601615616546
+
+Assignment operator:
+82 82 Very long test to see if the size and capacity are correctly stored and available.
+82 82 Very long test to see if the size and capacity are correctly stored and available.
+82 82 586601614621532608611610603532616601615616532616611532615601601532605602532616604601532615605622601532597610600532599597612597599605616621532597614601532599611614614601599616608621532615616611614601600532597610600532597618597605608597598608601546
+
+Assignment operator:
+28 28 Your reasoning is excellent,
+28 28 Your reasoning is excellent,
+28 28 589611617614532614601597615611610605610603532605615532601620599601608608601610616544
++= operator:
+71 71 Your reasoning is excellent, it's only your assumptions that are wrong.
+71 71 Your reasoning is excellent, it's only your assumptions that are wrong.
+71 71 589611617614532614601597615611610605610603532605615532601620599601608608601610616544532605616539615532611610608621532621611617614532597615615617609612616605611610615532616604597616532597614601532619614611610603546
+
+Find:
+34
+34
+34
+
+Find:
+18446744073709551615
+18446744073709551615
+18446744073709551615
+
+Substring:
+t's only
+t's only
+616539615532611610608621
+
+Insert:
+77 142 Your reasoning is excellent, it's only your basic assumptions that are wrong.
+77 142 Your reasoning is excellent, it's only your basic assumptions that are wrong.
+77 142 589611617614532614601597615611610605610603532605615532601620599601608608601610616544532605616539615532611610608621532621611617614532598597615605599532597615615617609612616605611610615532616604597616532597614601532619614611610603546
++= operator:
+111 142 Your reasoning is excellent, it's only your basic assumptions that are wrong. Whatever became of eternal truth?
+111 142 Your reasoning is excellent, it's only your basic assumptions that are wrong. Whatever became of eternal truth?
+111 142 589611617614532614601597615611610605610603532605615532601620599601608608601610616544532605616539615532611610608621532621611617614532598597615605599532597615615617609612616605611610615532616604597616532597614601532619614611610603546532587604597616601618601614532598601599597609601532611602532601616601614610597608532616614617616604563
+
+Replace:
+109 142 Your reasoning is excellent, it's only my basic assumptions that are wrong. Whatever became of eternal truth?
+109 142 Your reasoning is excellent, it's only my basic assumptions that are wrong. Whatever became of eternal truth?
+109 142 589611617614532614601597615611610605610603532605615532601620599601608608601610616544532605616539615532611610608621532609621532598597615605599532597615615617609612616605611610615532616604597616532597614601532619614611610603546532587604597616601618601614532598601599597609601532611602532601616601614610597608532616614617616604563
+==28709== Mismatched free() / delete / delete []
+==28709==    at 0x4C2A184: operator delete(void*) (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==28709==    by 0x4039C0: Vector<char>::replace(int, int, Vector<char> const&, int, int) (in /home/ssdavis/40/p7/SeansSrc/templates.out)
+==28709==    by 0x4021B2: main (in /home/ssdavis/40/p7/SeansSrc/templates.out)
+==28709==  Address 0x5aac530 is 0 bytes inside a block of size 142 alloc'd
+==28709==    at 0x4C297FD: operator new[](unsigned long) (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==28709==    by 0x4035B4: Vector<char>::insert(int, Vector<char> const&) (in /home/ssdavis/40/p7/SeansSrc/templates.out)
+==28709==    by 0x401E86: main (in /home/ssdavis/40/p7/SeansSrc/templates.out)
+==28709== 
+==28709== Mismatched free() / delete / delete []
+==28709==    at 0x4C2A184: operator delete(void*) (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==28709==    by 0x403C42: Vector<int>::replace(int, int, Vector<int> const&, int, int) (in /home/ssdavis/40/p7/SeansSrc/templates.out)
+==28709==    by 0x40220F: main (in /home/ssdavis/40/p7/SeansSrc/templates.out)
+==28709==  Address 0x5aac660 is 0 bytes inside a block of size 568 alloc'd
+==28709==    at 0x4C297FD: operator new[](unsigned long) (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==28709==    by 0x40374E: Vector<int>::insert(int, Vector<int> const&) (in /home/ssdavis/40/p7/SeansSrc/templates.out)
+==28709==    by 0x401ECC: main (in /home/ssdavis/40/p7/SeansSrc/templates.out)
+==28709== 
+
+Replace:
+175 284 Your reasoning is excellent, it's only my basic assumptions that are wrong. If you learn one useless thing every day, in a single year you'll learn 365 useless things.  truth?
+175 284 Your reasoning is excellent, it's only my basic assumptions that are wrong. If you learn one useless thing every day, in a single year you'll learn 365 useless things.  truth?
+175 284 589611617614532614601597615611610605610603532605615532601620599601608608601610616544532605616539615532611610608621532609621532598597615605599532597615615617609612616605611610615532616604597616532597614601532619614611610603546532573602532621611617532608601597614610532611610601532617615601608601615615532616604605610603532601618601614621532600597621544532605610532597532615605610603608601532621601597614532621611617539608608532608601597614610532551554553532617615601608601615615532616604605610603615546532532616614617616604563
+
+Forward iterator:
+Your reasoning is excellent, it's only my basic assumptions that are wrong. If you learn one useless thing every day, in a single year you'll learn 365 useless things.  truth?
+Your reasoning is excellent, it's only my basic assumptions that are wrong. If you learn one useless thing every day, in a single year you'll learn 365 useless things.  truth?
+589611617614532614601597615611610605610603532605615532601620599601608608601610616544532605616539615532611610608621532609621532598597615605599532597615615617609612616605611610615532616604597616532597614601532619614611610603546532573602532621611617532608601597614610532611610601532617615601608601615615532616604605610603532601618601614621532600597621544532605610532597532615605610603608601532621601597614532621611617539608608532608601597614610532551554553532617615601608601615615532616604605610603615546532532616614617616604563
+
+Reverse iterator:
+?hturt  .sgniht sselesu 563 nrael ll'uoy raey elgnis a ni ,yad yreve gniht sselesu eno nrael uoy fI .gnorw era taht snoitpmussa cisab ym ylno s'ti ,tnellecxe si gninosaer ruoY
+?hturt  .sgniht sselesu 563 nrael ll'uoy raey elgnis a ni ,yad yreve gniht sselesu eno nrael uoy fI .gnorw era taht snoitpmussa cisab ym ylno s'ti ,tnellecxe si gninosaer ruoY
+563604616617614616532532546615603610605604616532615615601608601615617532553554551532610614597601608532608608539617611621532614597601621532601608603610605615532597532610605532544621597600532621614601618601532603610605604616532615615601608601615617532601610611532610614597601608532617611621532602573532546603610611614619532601614597532616597604616532615610611605616612609617615615597532599605615597598532621609532621608610611532615539616605532544616610601608608601599620601532615605532603610605610611615597601614532614617611589
+==28709== 
+==28709== HEAP SUMMARY:
+==28709==     in use at exit: 72,704 bytes in 1 blocks
+==28709==   total heap usage: 54 allocs, 53 frees, 88,018 bytes allocated
+==28709== 
+==28709== LEAK SUMMARY:
+==28709==    definitely lost: 0 bytes in 0 blocks
+==28709==    indirectly lost: 0 bytes in 0 blocks
+==28709==      possibly lost: 0 bytes in 0 blocks
+==28709==    still reachable: 72,704 bytes in 1 blocks
+==28709==         suppressed: 0 bytes in 0 blocks
+==28709== Rerun with --leak-check=full to see details of leaked memory
+==28709== 
+==28709== For counts of detected and suppressed errors, rerun with: -v
+==28709== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 1 from 1)

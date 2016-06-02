@@ -1,0 +1,6 @@
+AA good sentence for substr.
+S 0 1
+S 2 6
+S 0 27
+S 20 7
+

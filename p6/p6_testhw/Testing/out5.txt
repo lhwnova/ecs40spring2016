@@ -1,0 +1,166 @@
+==7955== Memcheck, a memory error detector
+==7955== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==7955== Using Valgrind-3.10.1 and LibVEX; rerun with -h for copyright info
+==7955== Command: containers.out /home/ssdavis/40/p6/Testing/file5.txt
+==7955== 
+Size: 0
+Capacity: 0
+Insert 13 : 13
+Size: 1
+Capacity: 1
+Insert 8 : 8
+Size: 2
+Capacity: 2
+Insert 2 : 2
+Size: 3
+Capacity: 4
+Insert 9 : 9
+Capacity: 4
+Insert 4 : 4
+Capacity: 8
+Find 13 : 2 4 8 9 13
+Read [2] : 8
+Read [0] : 2
+Virtual seg fault.
+Read [6] : 2
+Virtual seg fault.
+Read [5] : 2
+Virtual seg fault.
+Read [-1] : 2
+Erase 8 : 9
+Size: 4
+Find 9 : 2 4 9
+Erase 2 : 4
+Size: 3
+Erase 11 : NULL
+Find 2 : NULL
+Find 13 : 4 9 13
+Find 9 : 4 9
+Size: 3
+Capacity: 8
+Size: 0
+Capacity: 0
+Insert 13 : 13
+Size: 1
+Capacity: 1
+Insert 8 : 8
+Size: 2
+Capacity: 2
+Insert 2 : 2
+Size: 3
+Capacity: 4
+Insert 9 : 9
+Capacity: 4
+Insert 4 : 4
+Capacity: 8
+Find 4 : 13 8 2 9 4
+Read [2] : 2
+Read [0] : 13
+Virtual seg fault.
+Read [6] : 13
+Virtual seg fault.
+Read [5] : 13
+Virtual seg fault.
+Read [-1] : 13
+Erase 8 : 2
+Size: 4
+Find 9 : 13 2 9
+Erase 2 : 9
+Size: 3
+Find 2 : 13 9 4 NULL
+Write [1] = 1
+Find 13 : 13
+Write [4] = 3
+Virtual seg fault.
+Write [-3] = 5
+Virtual seg fault.
+Find 4 : 5 1 4
+Size: 3
+Capacity: 8
+Size: 0
+Insert 13 : 13
+Size: 1
+Insert 8 : 8
+Size: 2
+Insert 2 : 2
+Size: 3
+Insert 9 : 9
+Insert 4 : 4
+Size: 5
+Find 13 : 13
+Erase 8 : 2
+Size: 4
+Find 4 : 13 2 9 4
+Erase 2 : 9
+Size: 3
+Erase 11 : NULL
+Find 2 : 13 9 4 NULL
+Find 13 : 13
+Find 9 : 13 9
+Size: 3
+Insert 16 : 16
+-- : 4
+++ : 16
+++ : NULL
+Find 13 : 13
+++ : 9
+-- : 13
+-- : NULL
+Erase 9 : 4
+==7955== Invalid read of size 8
+==7955==    at 0x401309: LinkedList::operator--() (linkedlist.cpp:92)
+==7955==    by 0x40189F: main (main.cpp:78)
+==7955==  Address 0x5aab498 is 8 bytes inside a block of size 24 free'd
+==7955==    at 0x4C2A184: operator delete(void*) (in /usr/lib64/valgrind/vgpreload_memcheck-amd64-linux.so)
+==7955==    by 0x401179: LinkedList::erase(int) (linkedlist.cpp:57)
+==7955==    by 0x40159D: main (main.cpp:39)
+==7955== 
+-- : 13
+++ : 4
+Size: 0
+Insert 13 : 13
+Size: 1
+Insert 8 : 8
+Size: 2
+Insert 2 : 2
+Size: 3
+Insert 9 : 9
+Insert 4 : 4
+Size: 5
+Find 13 : 2 4 8 9 13
+Erase 8 : 9
+Size: 4
+Find 4 : 2 4
+Erase 2 : 4
+Size: 3
+Erase 11 : NULL
+Find 2 : NULL
+Find 13 : 4 9 13
+Find 9 : 4 9
+Size: 3
+Insert 16 : 16
+-- : 13
+++ : 16
+++ : NULL
+Find 13 : 4 9 13
+++ : 16
+-- : 13
+-- : 9
+Erase 9 : 13
+-- : 4
+++ : 13
+==7955== 
+==7955== HEAP SUMMARY:
+==7955==     in use at exit: 72,704 bytes in 1 blocks
+==7955==   total heap usage: 27 allocs, 26 frees, 81,984 bytes allocated
+==7955== 
+==7955== LEAK SUMMARY:
+==7955==    definitely lost: 0 bytes in 0 blocks
+==7955==    indirectly lost: 0 bytes in 0 blocks
+==7955==      possibly lost: 0 bytes in 0 blocks
+==7955==    still reachable: 72,704 bytes in 1 blocks
+==7955==         suppressed: 0 bytes in 0 blocks
+==7955== Rerun with --leak-check=full to see details of leaked memory
+==7955== 
+==7955== For counts of detected and suppressed errors, rerun with: -v
+==7955== ERROR SUMMARY: 2 errors from 1 contexts (suppressed: 1 from 1)

@@ -1,0 +1,9 @@
+AA good
+R 2 4 8 6A little bigger
+R 4 1 2 25start with which to test replace.
+R 0 2 5 4Just garbage
+R 1 5 10 8This is a longer insert to catch 
+R 0 37 0 21A whole new sentence! 
+R 10 3 4 47This part should exceed the previous storage size by exactly one.
+R 3 2 2 5This is a bit bigger.
+ 

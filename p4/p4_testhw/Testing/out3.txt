@@ -1,0 +1,100 @@
+Balog,Ryan
+Molano,Laurent
+Novikov,Artem
+Wei,Kwasi
+Ngo,Tae-Yoon
+
+Name of passenger to remove: 
+ECS Flight Reservation Menu
+0. Exit.
+1. Add Passenger.
+2. Remove Passenger.
+3. Add Flight.
+4. Remove Flight.
+
+Please enter your choice: Flt# Origin               Destination
+201  Reno                 San Francisco
+265  Reno                 Los Angeles
+552  Stockton             Reno
+583  Reno                 Sacramento
+815  Sacramento           Stockton
+
+Flight number (0 = exit): Please enter the name of the passenger: ROW# ABCDEF
+ 1   -X-XX-
+ 2   --X---
+ 3   XXXX--
+ 4   -X-X--
+ 5   XX-XX-
+ 6   XXXX-X
+ 7   -X-X--
+ 8   -X----
+
+X = reserved.
+
+Please enter the row of the seat you wish to reserve: Please enter the seat letter you wish to reserve: 
+ECS Flight Reservation Menu
+0. Exit.
+1. Add Passenger.
+2. Remove Passenger.
+3. Add Flight.
+4. Remove Flight.
+
+Please enter your choice: Existing Flights:
+
+Flt# Origin               Destination
+201  Reno                 San Francisco
+265  Reno                 Los Angeles
+552  Stockton             Reno
+583  Reno                 Sacramento
+815  Sacramento           Stockton
+
+Flight number of passenger remove: Passengers on Flight #815
+Becker,Pao-Hsiang
+Lozano,Way
+Kee,Albert
+Abed-Amoli,Sukhbir
+Dham,Andrew
+El-Sissi,Brian
+Li,Peter
+Nakodary,Michael
+
+Name of passenger to remove: 
+ECS Flight Reservation Menu
+0. Exit.
+1. Add Passenger.
+2. Remove Passenger.
+3. Add Flight.
+4. Remove Flight.
+
+Please enter your choice: Existing Flights:
+
+Flt# Origin               Destination
+201  Reno                 San Francisco
+265  Reno                 Los Angeles
+552  Stockton             Reno
+583  Reno                 Sacramento
+815  Sacramento           Stockton
+
+Flight number of passenger remove: Passengers on Flight #265
+Lau,Evelyn
+Tran,Rex
+Morgan,Tri
+Liu,Anthony
+Aguirre,Aaron
+Martin,Rochak
+Wang,Jordan
+Guan,Larry
+Chinn,Raj
+Lam,Stephanie
+Li,Alan
+Chau,Brandon
+
+Name of passenger to remove: 
+ECS Flight Reservation Menu
+0. Exit.
+1. Add Passenger.
+2. Remove Passenger.
+3. Add Flight.
+4. Remove Flight.
+
+Please enter your choice: Goodbye.

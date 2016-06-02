@@ -1,0 +1,1041 @@
+File#: 1 
+OK
+passengers2.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 583 4 D Hashemzadeh,Victor
+552 4 D Ahn,Aaron
+583 1 B Fong,Clare
+815 1 A Becker,Pao-Hsiang
+552 6 F Balog,Ryan
+201 3 B Li,Peter
+815 4 B Li,Peter
+552 4 B Law,Edward
+552 1 B Mak,Daniel
+201 7 A Steiner,Gail
+583 4 C Brown,Jason
+815 4 C Nakodary,Michael
+552 3 A Vasquez,Daniel
+552 1 D Kuffel,Frank
+815 3 D El-Sissi,Brian
+201 4 B Yuan,Edward
+815 1 C Lozano,Way
+201 1 B Inocencio,Carlton
+265 7 A Chinn,Raj
+201 3 A Parcher,Christopher
+265 2 A Tran,Rex
+552 2 C Aroyan,Eddie
+201 5 A Wan,Amir
+552 3 B Loden,Hai
+265 1 A Lau,Evelyn
+552 5 D Ho,Jane
+265 3 B Aguirre,Aaron
+552 6 D Ballelos,Ernie
+583 7 C Nguyen,Jesse
+583 2 C Viswanathan,Long
+552 1 E Nguyen,Travis
+583 5 B Martin,Rochak
+552 8 B Wei,Kwasi
+552 5 A Liu,Anthony
+552 6 C Rood,Shuka
+583 5 D Dobbs,Alex
+265 2 B Morgan,Tri
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 7 D Novikov,Artem
+201 6 A Wang,Zhen
+583 7 A Huynh,Jeffrey
+201 2 B Lock,Carlos
+583 3 B Shelley,Jason
+201 2 A Lee,James
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+201 4 A Kong,Alexander
+583 1 C Guerin,Justin
+265 8 A Li,Alan
+265 3 A Liu,Anthony
+201 1 A Ahmadi,Juan
+552 6 B Chinn,Hoang
+552 7 B Molano,Laurent
+201 5 B Wang,Kenneth
+815 1 D Kee,Albert
+265 5 B Wang,Jordan
+552 5 C Uthus,Nicholas
+265 4 B Martin,Rochak
+552 5 B Hong,Gloria
+583 1 D Genitiano,David
+265 6 A Guan,Larry
+265 7 B Lam,Stephanie
+583 2 A Ye,Eric
+552 8 D Ngo,Tae-Yoon
+815 2 A Abed-Amoli,Sukhbir
+815 3 B Dham,Andrew
+583 5 A Alabanza,Alison
+583 2 B Huynh,Zane
+265 8 B Chau,Brandon
+201 6 B Abbot,Bud
+265 4 A Marx,Groucho
+552 8 F Williams,Robin
+583 5 C Fields,W.C.
+815 2 D Cleese,John
+201 7 B Costello,Lou
+265 9 A Marx,Harpo
+552 3 E Winters,Jonathan
+583 6 D McCarthy,Charlie
+815 2 C Idle,Eric
+
+
+Sean's:
+Please enter the name of file you wish printed: passengers3.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 201 1 A Ahmadi,Juan
+201 1 B Inocencio,Carlton
+201 2 A Lee,James
+201 2 B Lock,Carlos
+201 3 A Parcher,Christopher
+201 3 B Li,Peter
+201 4 A Kong,Alexander
+201 4 B Yuan,Edward
+201 5 A Wan,Amir
+201 5 B Wang,Kenneth
+201 6 A Wang,Zhen
+201 6 B Abbot,Bud
+201 7 A Steiner,Gail
+201 7 B Costello,Lou
+265 1 A Lau,Evelyn
+265 2 A Tran,Rex
+265 2 B Morgan,Tri
+265 3 A Liu,Anthony
+265 3 B Aguirre,Aaron
+265 4 A Marx,Groucho
+265 4 B Martin,Rochak
+265 5 B Wang,Jordan
+265 6 A Guan,Larry
+265 7 A Chinn,Raj
+265 7 B Lam,Stephanie
+265 8 A Li,Alan
+265 8 B Chau,Brandon
+265 9 A Marx,Harpo
+552 1 B Mak,Daniel
+552 1 D Kuffel,Frank
+552 1 E Nguyen,Travis
+552 2 C Aroyan,Eddie
+552 3 A Vasquez,Daniel
+552 3 B Loden,Hai
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+552 3 E Winters,Jonathan
+552 4 B Law,Edward
+552 4 D Ahn,Aaron
+552 5 A Liu,Anthony
+552 5 B Hong,Gloria
+552 5 C Uthus,Nicholas
+552 5 D Ho,Jane
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 6 B Chinn,Hoang
+552 6 C Rood,Shuka
+552 6 D Ballelos,Ernie
+552 6 F Balog,Ryan
+552 7 B Molano,Laurent
+552 7 D Novikov,Artem
+552 8 B Wei,Kwasi
+552 8 D Ngo,Tae-Yoon
+552 8 F Williams,Robin
+583 1 B Fong,Clare
+583 1 C Guerin,Justin
+583 1 D Genitiano,David
+583 2 A Ye,Eric
+583 2 B Huynh,Zane
+583 2 C Viswanathan,Long
+583 3 B Shelley,Jason
+583 4 C Brown,Jason
+583 4 D Hashemzadeh,Victor
+583 5 A Alabanza,Alison
+583 5 B Martin,Rochak
+583 5 C Fields,W.C.
+583 5 D Dobbs,Alex
+583 6 D McCarthy,Charlie
+583 7 A Huynh,Jeffrey
+583 7 C Nguyen,Jesse
+815 1 A Becker,Pao-Hsiang
+815 1 C Lozano,Way
+815 1 D Kee,Albert
+815 2 A Abed-Amoli,Sukhbir
+815 2 C Idle,Eric
+815 2 D Cleese,John
+815 3 B Dham,Andrew
+815 3 D El-Sissi,Brian
+815 4 B Li,Peter
+815 4 C Nakodary,Michael
+
+
+Sean's:
+Please enter the name of file you wish printed: File#: 2 
+OK
+passengers2.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 583 4 D Hashemzadeh,Victor
+552 4 D Ahn,Aaron
+583 1 B Fong,Clare
+815 1 A Becker,Pao-Hsiang
+552 6 F Balog,Ryan
+201 3 B Li,Peter
+815 4 B Li,Peter
+552 4 B Law,Edward
+552 1 B Mak,Daniel
+201 7 A Steiner,Gail
+583 4 C Brown,Jason
+815 4 C Nakodary,Michael
+552 3 A Vasquez,Daniel
+552 1 D Kuffel,Frank
+815 3 D El-Sissi,Brian
+201 4 B Yuan,Edward
+815 1 C Lozano,Way
+201 1 B Inocencio,Carlton
+265 7 A Chinn,Raj
+201 3 A Parcher,Christopher
+265 2 A Tran,Rex
+552 2 C Aroyan,Eddie
+201 5 A Wan,Amir
+552 3 B Loden,Hai
+265 1 A Lau,Evelyn
+552 5 D Ho,Jane
+265 3 B Aguirre,Aaron
+552 6 D Ballelos,Ernie
+583 7 C Nguyen,Jesse
+583 2 C Viswanathan,Long
+552 1 E Nguyen,Travis
+583 5 B Martin,Rochak
+552 8 B Wei,Kwasi
+552 5 A Liu,Anthony
+552 6 C Rood,Shuka
+583 5 D Dobbs,Alex
+265 2 B Morgan,Tri
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 7 D Novikov,Artem
+201 6 A Wang,Zhen
+583 7 A Huynh,Jeffrey
+201 2 B Lock,Carlos
+583 3 B Shelley,Jason
+201 2 A Lee,James
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+201 4 A Kong,Alexander
+583 1 C Guerin,Justin
+265 8 A Li,Alan
+265 3 A Liu,Anthony
+201 1 A Ahmadi,Juan
+552 6 B Chinn,Hoang
+552 7 B Molano,Laurent
+201 5 B Wang,Kenneth
+815 1 D Kee,Albert
+265 5 B Wang,Jordan
+552 5 C Uthus,Nicholas
+265 4 B Martin,Rochak
+552 5 B Hong,Gloria
+583 1 D Genitiano,David
+265 6 A Guan,Larry
+265 7 B Lam,Stephanie
+583 2 A Ye,Eric
+552 8 D Ngo,Tae-Yoon
+815 2 A Abed-Amoli,Sukhbir
+815 3 B Dham,Andrew
+583 5 A Alabanza,Alison
+583 2 B Huynh,Zane
+265 8 B Chau,Brandon
+201 7 B Hope,Bob
+201 6 B Crosby,Bing
+
+
+Sean's:
+Please enter the name of file you wish printed: passengers3.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 201 1 A Ahmadi,Juan
+201 1 B Inocencio,Carlton
+201 2 A Lee,James
+201 2 B Lock,Carlos
+201 3 A Parcher,Christopher
+201 3 B Li,Peter
+201 4 A Kong,Alexander
+201 4 B Yuan,Edward
+201 5 A Wan,Amir
+201 5 B Wang,Kenneth
+201 6 A Wang,Zhen
+201 6 B Crosby,Bing
+201 7 A Steiner,Gail
+201 7 B Hope,Bob
+265 1 A Lau,Evelyn
+265 2 A Tran,Rex
+265 2 B Morgan,Tri
+265 3 A Liu,Anthony
+265 3 B Aguirre,Aaron
+265 4 B Martin,Rochak
+265 5 B Wang,Jordan
+265 6 A Guan,Larry
+265 7 A Chinn,Raj
+265 7 B Lam,Stephanie
+265 8 A Li,Alan
+265 8 B Chau,Brandon
+552 1 B Mak,Daniel
+552 1 D Kuffel,Frank
+552 1 E Nguyen,Travis
+552 2 C Aroyan,Eddie
+552 3 A Vasquez,Daniel
+552 3 B Loden,Hai
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+552 4 B Law,Edward
+552 4 D Ahn,Aaron
+552 5 A Liu,Anthony
+552 5 B Hong,Gloria
+552 5 C Uthus,Nicholas
+552 5 D Ho,Jane
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 6 B Chinn,Hoang
+552 6 C Rood,Shuka
+552 6 D Ballelos,Ernie
+552 6 F Balog,Ryan
+552 7 B Molano,Laurent
+552 7 D Novikov,Artem
+552 8 B Wei,Kwasi
+552 8 D Ngo,Tae-Yoon
+583 1 B Fong,Clare
+583 1 C Guerin,Justin
+583 1 D Genitiano,David
+583 2 A Ye,Eric
+583 2 B Huynh,Zane
+583 2 C Viswanathan,Long
+583 3 B Shelley,Jason
+583 4 C Brown,Jason
+583 4 D Hashemzadeh,Victor
+583 5 A Alabanza,Alison
+583 5 B Martin,Rochak
+583 5 D Dobbs,Alex
+583 7 A Huynh,Jeffrey
+583 7 C Nguyen,Jesse
+815 1 A Becker,Pao-Hsiang
+815 1 C Lozano,Way
+815 1 D Kee,Albert
+815 2 A Abed-Amoli,Sukhbir
+815 3 B Dham,Andrew
+815 3 D El-Sissi,Brian
+815 4 B Li,Peter
+815 4 C Nakodary,Michael
+
+
+Sean's:
+Please enter the name of file you wish printed: File#: 3 
+OK
+passengers2.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 583 4 D Hashemzadeh,Victor
+552 4 D Ahn,Aaron
+583 1 B Fong,Clare
+815 1 A Becker,Pao-Hsiang
+552 6 F Balog,Ryan
+201 3 B Li,Peter
+815 4 B Li,Peter
+552 4 B Law,Edward
+552 1 B Mak,Daniel
+201 7 A Steiner,Gail
+583 4 C Brown,Jason
+815 4 C Nakodary,Michael
+552 3 A Vasquez,Daniel
+552 1 D Kuffel,Frank
+815 3 D El-Sissi,Brian
+201 4 B Yuan,Edward
+815 1 C Lozano,Way
+201 1 B Inocencio,Carlton
+265 7 A Chinn,Raj
+201 3 A Parcher,Christopher
+265 2 A Tran,Rex
+552 2 C Aroyan,Eddie
+201 5 A Wan,Amir
+552 3 B Loden,Hai
+265 1 A Lau,Evelyn
+552 5 D Ho,Jane
+265 3 B Aguirre,Aaron
+552 6 D Ballelos,Ernie
+583 7 C Nguyen,Jesse
+583 2 C Viswanathan,Long
+552 1 E Nguyen,Travis
+583 5 B Martin,Rochak
+552 8 B Wei,Kwasi
+552 5 A Liu,Anthony
+552 6 C Rood,Shuka
+583 5 D Dobbs,Alex
+265 2 B Morgan,Tri
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 7 D Novikov,Artem
+201 6 A Wang,Zhen
+583 7 A Huynh,Jeffrey
+201 2 B Lock,Carlos
+583 3 B Shelley,Jason
+201 2 A Lee,James
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+201 4 A Kong,Alexander
+583 1 C Guerin,Justin
+265 8 A Li,Alan
+265 3 A Liu,Anthony
+201 1 A Ahmadi,Juan
+552 6 B Chinn,Hoang
+552 7 B Molano,Laurent
+201 5 B Wang,Kenneth
+815 1 D Kee,Albert
+265 5 B Wang,Jordan
+-1 5 C Uthus,Nicholas
+265 4 B Martin,Rochak
+552 5 B Hong,Gloria
+583 1 D Genitiano,David
+265 6 A Guan,Larry
+265 7 B Lam,Stephanie
+583 2 A Ye,Eric
+-1 8 D Ngo,Tae-Yoon
+815 2 A Abed-Amoli,Sukhbir
+815 3 B Dham,Andrew
+583 5 A Alabanza,Alison
+583 2 B Huynh,Zane
+-1 8 B Chau,Brandon
+552 5 C Carlin,George
+
+
+Sean's:
+Please enter the name of file you wish printed: passengers3.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 201 1 A Ahmadi,Juan
+201 1 B Inocencio,Carlton
+201 2 A Lee,James
+201 2 B Lock,Carlos
+201 3 A Parcher,Christopher
+201 3 B Li,Peter
+201 4 A Kong,Alexander
+201 4 B Yuan,Edward
+201 5 A Wan,Amir
+201 5 B Wang,Kenneth
+201 6 A Wang,Zhen
+201 7 A Steiner,Gail
+265 1 A Lau,Evelyn
+265 2 A Tran,Rex
+265 2 B Morgan,Tri
+265 3 A Liu,Anthony
+265 3 B Aguirre,Aaron
+265 4 B Martin,Rochak
+265 5 B Wang,Jordan
+265 6 A Guan,Larry
+265 7 A Chinn,Raj
+265 7 B Lam,Stephanie
+265 8 A Li,Alan
+552 1 B Mak,Daniel
+552 1 D Kuffel,Frank
+552 1 E Nguyen,Travis
+552 2 C Aroyan,Eddie
+552 3 A Vasquez,Daniel
+552 3 B Loden,Hai
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+552 4 B Law,Edward
+552 4 D Ahn,Aaron
+552 5 A Liu,Anthony
+552 5 B Hong,Gloria
+552 5 C Carlin,George
+552 5 D Ho,Jane
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 6 B Chinn,Hoang
+552 6 C Rood,Shuka
+552 6 D Ballelos,Ernie
+552 6 F Balog,Ryan
+552 7 B Molano,Laurent
+552 7 D Novikov,Artem
+552 8 B Wei,Kwasi
+583 1 B Fong,Clare
+583 1 C Guerin,Justin
+583 1 D Genitiano,David
+583 2 A Ye,Eric
+583 2 B Huynh,Zane
+583 2 C Viswanathan,Long
+583 3 B Shelley,Jason
+583 4 C Brown,Jason
+583 4 D Hashemzadeh,Victor
+583 5 A Alabanza,Alison
+583 5 B Martin,Rochak
+583 5 D Dobbs,Alex
+583 7 A Huynh,Jeffrey
+583 7 C Nguyen,Jesse
+815 1 A Becker,Pao-Hsiang
+815 1 C Lozano,Way
+815 1 D Kee,Albert
+815 2 A Abed-Amoli,Sukhbir
+815 3 B Dham,Andrew
+815 3 D El-Sissi,Brian
+815 4 B Li,Peter
+815 4 C Nakodary,Michael
+
+
+Sean's:
+Please enter the name of file you wish printed: File#: 4 
+OK
+passengers2.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 583 4 D Hashemzadeh,Victor
+552 4 D Ahn,Aaron
+583 1 B Fong,Clare
+815 1 A Becker,Pao-Hsiang
+552 6 F Balog,Ryan
+201 3 B Li,Peter
+815 4 B Li,Peter
+552 4 B Law,Edward
+552 1 B Mak,Daniel
+201 7 A Steiner,Gail
+583 4 C Brown,Jason
+815 4 C Nakodary,Michael
+552 3 A Vasquez,Daniel
+552 1 D Kuffel,Frank
+815 3 D El-Sissi,Brian
+201 4 B Yuan,Edward
+815 1 C Lozano,Way
+201 1 B Inocencio,Carlton
+265 7 A Chinn,Raj
+201 3 A Parcher,Christopher
+265 2 A Tran,Rex
+552 2 C Aroyan,Eddie
+201 5 A Wan,Amir
+552 3 B Loden,Hai
+265 1 A Lau,Evelyn
+552 5 D Ho,Jane
+265 3 B Aguirre,Aaron
+552 6 D Ballelos,Ernie
+583 7 C Nguyen,Jesse
+583 2 C Viswanathan,Long
+552 1 E Nguyen,Travis
+583 5 B Martin,Rochak
+552 8 B Wei,Kwasi
+552 5 A Liu,Anthony
+552 6 C Rood,Shuka
+583 5 D Dobbs,Alex
+265 2 B Morgan,Tri
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 7 D Novikov,Artem
+201 6 A Wang,Zhen
+583 7 A Huynh,Jeffrey
+201 2 B Lock,Carlos
+583 3 B Shelley,Jason
+201 2 A Lee,James
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+201 4 A Kong,Alexander
+583 1 C Guerin,Justin
+265 8 A Li,Alan
+265 3 A Liu,Anthony
+201 1 A Ahmadi,Juan
+552 6 B Chinn,Hoang
+552 7 B Molano,Laurent
+201 5 B Wang,Kenneth
+815 1 D Kee,Albert
+265 5 B Wang,Jordan
+552 5 C Uthus,Nicholas
+265 4 B Martin,Rochak
+552 5 B Hong,Gloria
+583 1 D Genitiano,David
+265 6 A Guan,Larry
+265 7 B Lam,Stephanie
+583 2 A Ye,Eric
+552 8 D Ngo,Tae-Yoon
+815 2 A Abed-Amoli,Sukhbir
+815 3 B Dham,Andrew
+583 5 A Alabanza,Alison
+583 2 B Huynh,Zane
+265 8 B Chau,Brandon
+
+
+Sean's:
+Please enter the name of file you wish printed: passengers3.dat not found.
+flights2.csv Not OK
+Yours:
+Please enter the name of file you wish printed: 2613 12338 1 ,Reno,San Francisco,7,2
+265,Ren
+11375 28492 s  Angeles,9,2
+552,Stockton,Reno,
+11320 2614 5 83,Reno,Sacramento,7,4
+815,Sacr
+
+
+Sean's:
+Please enter the name of file you wish printed: File#: 5 
+OK
+passengers2.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 583 4 D Hashemzadeh,Victor
+552 4 D Ahn,Aaron
+583 1 B Fong,Clare
+815 1 A Becker,Pao-Hsiang
+552 6 F Balog,Ryan
+201 3 B Li,Peter
+815 4 B Li,Peter
+552 4 B Law,Edward
+552 1 B Mak,Daniel
+201 7 A Steiner,Gail
+583 4 C Brown,Jason
+815 4 C Nakodary,Michael
+552 3 A Vasquez,Daniel
+552 1 D Kuffel,Frank
+815 3 D El-Sissi,Brian
+201 4 B Yuan,Edward
+815 1 C Lozano,Way
+201 1 B Inocencio,Carlton
+265 7 A Chinn,Raj
+201 3 A Parcher,Christopher
+265 2 A Tran,Rex
+552 2 C Aroyan,Eddie
+201 5 A Wan,Amir
+552 3 B Loden,Hai
+265 1 A Lau,Evelyn
+552 5 D Ho,Jane
+265 3 B Aguirre,Aaron
+552 6 D Ballelos,Ernie
+583 7 C Nguyen,Jesse
+583 2 C Viswanathan,Long
+552 1 E Nguyen,Travis
+583 5 B Martin,Rochak
+552 8 B Wei,Kwasi
+552 5 A Liu,Anthony
+552 6 C Rood,Shuka
+583 5 D Dobbs,Alex
+265 2 B Morgan,Tri
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 7 D Novikov,Artem
+201 6 A Wang,Zhen
+583 7 A Huynh,Jeffrey
+201 2 B Lock,Carlos
+583 3 B Shelley,Jason
+201 2 A Lee,James
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+201 4 A Kong,Alexander
+583 1 C Guerin,Justin
+265 8 A Li,Alan
+265 3 A Liu,Anthony
+201 1 A Ahmadi,Juan
+552 6 B Chinn,Hoang
+552 7 B Molano,Laurent
+201 5 B Wang,Kenneth
+815 1 D Kee,Albert
+265 5 B Wang,Jordan
+552 5 C Uthus,Nicholas
+265 4 B Martin,Rochak
+552 5 B Hong,Gloria
+583 1 D Genitiano,David
+265 6 A Guan,Larry
+265 7 B Lam,Stephanie
+583 2 A Ye,Eric
+552 8 D Ngo,Tae-Yoon
+815 2 A Abed-Amoli,Sukhbir
+815 3 B Dham,Andrew
+583 5 A Alabanza,Alison
+583 2 B Huynh,Zane
+265 8 B Chau,Brandon
+551 5 E Ball,Lucille
+551 1 A Arnez,Desi
+
+
+Sean's:
+Please enter the name of file you wish printed: passengers3.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 201 1 A Ahmadi,Juan
+201 1 B Inocencio,Carlton
+201 2 A Lee,James
+201 2 B Lock,Carlos
+201 3 A Parcher,Christopher
+201 3 B Li,Peter
+201 4 A Kong,Alexander
+201 4 B Yuan,Edward
+201 5 A Wan,Amir
+201 5 B Wang,Kenneth
+201 6 A Wang,Zhen
+201 7 A Steiner,Gail
+265 1 A Lau,Evelyn
+265 2 A Tran,Rex
+265 2 B Morgan,Tri
+265 3 A Liu,Anthony
+265 3 B Aguirre,Aaron
+265 4 B Martin,Rochak
+265 5 B Wang,Jordan
+265 6 A Guan,Larry
+265 7 A Chinn,Raj
+265 7 B Lam,Stephanie
+265 8 A Li,Alan
+265 8 B Chau,Brandon
+551 1 A Arnez,Desi
+551 5 E Ball,Lucille
+552 1 B Mak,Daniel
+552 1 D Kuffel,Frank
+552 1 E Nguyen,Travis
+552 2 C Aroyan,Eddie
+552 3 A Vasquez,Daniel
+552 3 B Loden,Hai
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+552 4 B Law,Edward
+552 4 D Ahn,Aaron
+552 5 A Liu,Anthony
+552 5 B Hong,Gloria
+552 5 C Uthus,Nicholas
+552 5 D Ho,Jane
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 6 B Chinn,Hoang
+552 6 C Rood,Shuka
+552 6 D Ballelos,Ernie
+552 6 F Balog,Ryan
+552 7 B Molano,Laurent
+552 7 D Novikov,Artem
+552 8 B Wei,Kwasi
+552 8 D Ngo,Tae-Yoon
+583 1 B Fong,Clare
+583 1 C Guerin,Justin
+583 1 D Genitiano,David
+583 2 A Ye,Eric
+583 2 B Huynh,Zane
+583 2 C Viswanathan,Long
+583 3 B Shelley,Jason
+583 4 C Brown,Jason
+583 4 D Hashemzadeh,Victor
+583 5 A Alabanza,Alison
+583 5 B Martin,Rochak
+583 5 D Dobbs,Alex
+583 7 A Huynh,Jeffrey
+583 7 C Nguyen,Jesse
+815 1 A Becker,Pao-Hsiang
+815 1 C Lozano,Way
+815 1 D Kee,Albert
+815 2 A Abed-Amoli,Sukhbir
+815 3 B Dham,Andrew
+815 3 D El-Sissi,Brian
+815 4 B Li,Peter
+815 4 C Nakodary,Michael
+
+
+Sean's:
+Please enter the name of file you wish printed: flights2.csv Not OK
+Yours:
+Please enter the name of file you wish printed: 2614 12338 1 ,Reno,San Francisco,7,2
+265,Ren
+11375 28492 s  Angeles,9,2
+551,Davis,Sacramen
+28532 13612 , 5
+552,Stockton,Reno,8,6
+583,Ren
+11375 24915 c ramento,7,4
+815,Sacramento,Stoc
+
+
+Sean's:
+Please enter the name of file you wish printed: File#: 6 
+OK
+passengers2.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 583 4 D Hashemzadeh,Victor
+552 4 D Ahn,Aaron
+583 1 B Fong,Clare
+-1 1 A Becker,Pao-Hsiang
+552 6 F Balog,Ryan
+201 3 B Li,Peter
+-1 4 B Li,Peter
+552 4 B Law,Edward
+552 1 B Mak,Daniel
+201 7 A Steiner,Gail
+583 4 C Brown,Jason
+-1 4 C Nakodary,Michael
+552 3 A Vasquez,Daniel
+552 1 D Kuffel,Frank
+-1 3 D El-Sissi,Brian
+201 4 B Yuan,Edward
+-1 1 C Lozano,Way
+201 1 B Inocencio,Carlton
+-1 7 A Chinn,Raj
+201 3 A Parcher,Christopher
+-1 2 A Tran,Rex
+552 2 C Aroyan,Eddie
+201 5 A Wan,Amir
+552 3 B Loden,Hai
+-1 1 A Lau,Evelyn
+552 5 D Ho,Jane
+-1 3 B Aguirre,Aaron
+552 6 D Ballelos,Ernie
+583 7 C Nguyen,Jesse
+583 2 C Viswanathan,Long
+552 1 E Nguyen,Travis
+583 5 B Martin,Rochak
+552 8 B Wei,Kwasi
+552 5 A Liu,Anthony
+552 6 C Rood,Shuka
+583 5 D Dobbs,Alex
+-1 2 B Morgan,Tri
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 7 D Novikov,Artem
+201 6 A Wang,Zhen
+583 7 A Huynh,Jeffrey
+201 2 B Lock,Carlos
+583 3 B Shelley,Jason
+201 2 A Lee,James
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+201 4 A Kong,Alexander
+583 1 C Guerin,Justin
+-1 8 A Li,Alan
+-1 3 A Liu,Anthony
+201 1 A Ahmadi,Juan
+552 6 B Chinn,Hoang
+552 7 B Molano,Laurent
+201 5 B Wang,Kenneth
+-1 1 D Kee,Albert
+-1 5 B Wang,Jordan
+552 5 C Uthus,Nicholas
+-1 4 B Martin,Rochak
+552 5 B Hong,Gloria
+583 1 D Genitiano,David
+-1 6 A Guan,Larry
+-1 7 B Lam,Stephanie
+583 2 A Ye,Eric
+552 8 D Ngo,Tae-Yoon
+-1 2 A Abed-Amoli,Sukhbir
+-1 3 B Dham,Andrew
+583 5 A Alabanza,Alison
+583 2 B Huynh,Zane
+-1 8 B Chau,Brandon
+583 1 A Bruce,Lenny
+
+
+Sean's:
+Please enter the name of file you wish printed: passengers3.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 201 1 A Ahmadi,Juan
+201 1 B Inocencio,Carlton
+201 2 A Lee,James
+201 2 B Lock,Carlos
+201 3 A Parcher,Christopher
+201 3 B Li,Peter
+201 4 A Kong,Alexander
+201 4 B Yuan,Edward
+201 5 A Wan,Amir
+201 5 B Wang,Kenneth
+201 6 A Wang,Zhen
+201 7 A Steiner,Gail
+552 1 B Mak,Daniel
+552 1 D Kuffel,Frank
+552 1 E Nguyen,Travis
+552 2 C Aroyan,Eddie
+552 3 A Vasquez,Daniel
+552 3 B Loden,Hai
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+552 4 B Law,Edward
+552 4 D Ahn,Aaron
+552 5 A Liu,Anthony
+552 5 B Hong,Gloria
+552 5 C Uthus,Nicholas
+552 5 D Ho,Jane
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 6 B Chinn,Hoang
+552 6 C Rood,Shuka
+552 6 D Ballelos,Ernie
+552 6 F Balog,Ryan
+552 7 B Molano,Laurent
+552 7 D Novikov,Artem
+552 8 B Wei,Kwasi
+552 8 D Ngo,Tae-Yoon
+583 1 A Bruce,Lenny
+583 1 B Fong,Clare
+583 1 C Guerin,Justin
+583 1 D Genitiano,David
+583 2 A Ye,Eric
+583 2 B Huynh,Zane
+583 2 C Viswanathan,Long
+583 3 B Shelley,Jason
+583 4 C Brown,Jason
+583 4 D Hashemzadeh,Victor
+583 5 A Alabanza,Alison
+583 5 B Martin,Rochak
+583 5 D Dobbs,Alex
+583 7 A Huynh,Jeffrey
+583 7 C Nguyen,Jesse
+
+
+Sean's:
+Please enter the name of file you wish printed: flights2.csv Not OK
+Yours:
+Please enter the name of file you wish printed: 2611 12338 1 ,Reno,San Francisco,7,2
+552,Sto
+27491 28532 n ,Reno,8,6
+583,Reno,Sacramento,7
+
+
+Sean's:
+Please enter the name of file you wish printed: File#: 7 
+OK
+passengers2.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 583 4 D Hashemzadeh,Victor
+552 4 D Ahn,Aaron
+583 1 B Fong,Clare
+815 1 A Becker,Pao-Hsiang
+552 6 F Balog,Ryan
+201 3 B Li,Peter
+815 4 B Li,Peter
+552 4 B Law,Edward
+552 1 B Mak,Daniel
+201 7 A Steiner,Gail
+583 4 C Brown,Jason
+815 4 C Nakodary,Michael
+552 3 A Vasquez,Daniel
+552 1 D Kuffel,Frank
+815 3 D El-Sissi,Brian
+201 4 B Yuan,Edward
+815 1 C Lozano,Way
+201 1 B Inocencio,Carlton
+-1 7 A Chinn,Raj
+201 3 A Parcher,Christopher
+-1 2 A Tran,Rex
+552 2 C Aroyan,Eddie
+201 5 A Wan,Amir
+552 3 B Loden,Hai
+-1 1 A Lau,Evelyn
+552 5 D Ho,Jane
+-1 3 B Aguirre,Aaron
+552 6 D Ballelos,Ernie
+583 7 C Nguyen,Jesse
+583 2 C Viswanathan,Long
+552 1 E Nguyen,Travis
+583 5 B Martin,Rochak
+552 8 B Wei,Kwasi
+552 5 A Liu,Anthony
+552 6 C Rood,Shuka
+-1 5 D Dobbs,Alex
+-1 2 B Morgan,Tri
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 7 D Novikov,Artem
+201 6 A Wang,Zhen
+583 7 A Huynh,Jeffrey
+201 2 B Lock,Carlos
+583 3 B Shelley,Jason
+201 2 A Lee,James
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+201 4 A Kong,Alexander
+583 1 C Guerin,Justin
+-1 8 A Li,Alan
+-1 3 A Liu,Anthony
+201 1 A Ahmadi,Juan
+552 6 B Chinn,Hoang
+552 7 B Molano,Laurent
+201 5 B Wang,Kenneth
+815 1 D Kee,Albert
+-1 5 B Wang,Jordan
+552 5 C Uthus,Nicholas
+-1 4 B Martin,Rochak
+552 5 B Hong,Gloria
+583 1 D Genitiano,David
+-1 6 A Guan,Larry
+-1 7 B Lam,Stephanie
+583 2 A Ye,Eric
+552 8 D Ngo,Tae-Yoon
+815 2 A Abed-Amoli,Sukhbir
+815 3 B Dham,Andrew
+583 5 A Alabanza,Alison
+583 2 B Huynh,Zane
+-1 8 B Chau,Brandon
+201 7 B Flintstone,Fred
+201 6 B Mays,Willie
+553 2 H Fields,W.C.
+553 1 G Marx,Groucho
+
+
+Sean's:
+Please enter the name of file you wish printed: passengers3.dat Not OK
+Yours:
+Please enter the name of file you wish printed: 201 1 A Ahmadi,Juan
+201 1 B Inocencio,Carlton
+201 2 A Lee,James
+201 2 B Lock,Carlos
+201 3 A Parcher,Christopher
+201 3 B Li,Peter
+201 4 A Kong,Alexander
+201 4 B Yuan,Edward
+201 5 A Wan,Amir
+201 5 B Wang,Kenneth
+201 6 A Wang,Zhen
+201 6 B Mays,Willie
+201 7 A Steiner,Gail
+201 7 B Flintstone,Fred
+552 1 B Mak,Daniel
+552 1 D Kuffel,Frank
+552 1 E Nguyen,Travis
+552 2 C Aroyan,Eddie
+552 3 A Vasquez,Daniel
+552 3 B Loden,Hai
+552 3 C Lee,Mandeep
+552 3 D Nakodary,Michael
+552 4 B Law,Edward
+552 4 D Ahn,Aaron
+552 5 A Liu,Anthony
+552 5 B Hong,Gloria
+552 5 C Uthus,Nicholas
+552 5 D Ho,Jane
+552 5 E Genitiano,David
+552 6 A Bleier,Wei-Chi
+552 6 B Chinn,Hoang
+552 6 C Rood,Shuka
+552 6 D Ballelos,Ernie
+552 6 F Balog,Ryan
+552 7 B Molano,Laurent
+552 7 D Novikov,Artem
+552 8 B Wei,Kwasi
+552 8 D Ngo,Tae-Yoon
+553 1 G Marx,Groucho
+553 2 H Fields,W.C.
+583 1 B Fong,Clare
+583 1 C Guerin,Justin
+583 1 D Genitiano,David
+583 2 A Ye,Eric
+583 2 B Huynh,Zane
+583 2 C Viswanathan,Long
+583 3 B Shelley,Jason
+583 4 C Brown,Jason
+583 4 D Hashemzadeh,Victor
+583 5 A Alabanza,Alison
+583 5 B Martin,Rochak
+583 7 A Huynh,Jeffrey
+583 7 C Nguyen,Jesse
+815 1 A Becker,Pao-Hsiang
+815 1 C Lozano,Way
+815 1 D Kee,Albert
+815 2 A Abed-Amoli,Sukhbir
+815 3 B Dham,Andrew
+815 3 D El-Sissi,Brian
+815 4 B Li,Peter
+815 4 C Nakodary,Michael
+
+
+Sean's:
+Please enter the name of file you wish printed: flights2.csv Not OK
+Yours:
+Please enter the name of file you wish printed: 2613 12338 1 ,Reno,San Francisco,7,2
+552,Sto
+27491 28532 n ,Reno,8,6
+553,Davis,San Diego,3
+14380 13578 8 3,Reno,Sacramento,7,4
+815,Sacra
+
+
+Sean's:
+Please enter the name of file you wish printed: Memory leak check:
+OK

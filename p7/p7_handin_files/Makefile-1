@@ -1,0 +1,5 @@
+templates.out : main.cpp vector.cpp vector.h  
+	g++ -ansi -Wall -g -o templates.out main.cpp 
+
+clean : 
+	rm -f templates.out  

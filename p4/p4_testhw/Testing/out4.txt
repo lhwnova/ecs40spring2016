@@ -1,0 +1,63 @@
+
+ECS Flight Reservation Menu
+0. Exit.
+1. Add Passenger.
+2. Remove Passenger.
+3. Add Flight.
+4. Remove Flight.
+
+Please enter your choice: Existing Flights:
+
+Flt# Origin               Destination
+201  Reno                 San Francisco
+265  Reno                 Los Angeles
+552  Stockton             Reno
+583  Reno                 Sacramento
+815  Sacramento           Stockton
+
+Flight number to add: Origin: Destination: Rows: Width: 
+ECS Flight Reservation Menu
+0. Exit.
+1. Add Passenger.
+2. Remove Passenger.
+3. Add Flight.
+4. Remove Flight.
+
+Please enter your choice: Existing Flights:
+
+Flt# Origin               Destination
+201  Reno                 San Francisco
+202  Davis                Fresno
+265  Reno                 Los Angeles
+552  Stockton             Reno
+583  Reno                 Sacramento
+815  Sacramento           Stockton
+
+Flight number to add: Origin: Destination: Rows: Width: 
+ECS Flight Reservation Menu
+0. Exit.
+1. Add Passenger.
+2. Remove Passenger.
+3. Add Flight.
+4. Remove Flight.
+
+Please enter your choice: Existing Flights:
+
+Flt# Origin               Destination
+200  Woodland             Oakland
+201  Reno                 San Francisco
+202  Davis                Fresno
+265  Reno                 Los Angeles
+552  Stockton             Reno
+583  Reno                 Sacramento
+815  Sacramento           Stockton
+
+Flight number to add: Origin: Destination: Rows: Width: 
+ECS Flight Reservation Menu
+0. Exit.
+1. Add Passenger.
+2. Remove Passenger.
+3. Add Flight.
+4. Remove Flight.
+
+Please enter your choice: Goodbye.

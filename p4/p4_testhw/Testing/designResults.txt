@@ -1,0 +1,8 @@
+Fatal design error: "int flightNum;" not found in class Flight in flight.h.
+Fatal design error: "char origin[...];" not found in class Flight in flight.h.
+Fatal design error: "char destination[...];" not found in class Flight in flight.h.
+Fatal design error: "Plane *plane;" not found in class Flight in flight.h.
+Fatal design error: "int rows;" not found in class *Flight Plane in plane.h.
+Fatal design error: "int width;" not found in class *Flight Plane in plane.h.
+Fatal design error: "int reserved;" not found in class *Flight Plane in plane.h.
+Missing const from Flight method that writes reservations2.txt

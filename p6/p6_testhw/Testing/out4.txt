@@ -1,0 +1,32 @@
+Size: 0
+Insert 13 : 13
+Size: 1
+Insert 8 : 8
+Size: 2
+Insert 2 : 2
+Size: 3
+Insert 9 : 9
+Insert 4 : 4
+Size: 5
+Find 13 : 2 4 8 9 13
+Erase 8 : 9
+Size: 4
+Find 4 : 2 4
+Erase 2 : 4
+Size: 3
+Erase 11 : NULL
+Find 2 : NULL
+Find 13 : 4 9 13
+Find 9 : 4 9
+Size: 3
+Insert 16 : 16
+-- : 13
+++ : 16
+++ : NULL
+Find 13 : 4 9 13
+++ : 16
+-- : 13
+-- : 9
+Erase 9 : 13
+-- : 4
+++ : 13

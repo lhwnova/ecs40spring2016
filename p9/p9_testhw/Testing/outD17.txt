@@ -1,0 +1,1 @@
+void BinarySearchTree<T>::find(const T&) const [with T = int]: Assertion `root != __null' 

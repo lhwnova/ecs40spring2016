@@ -1,0 +1,1 @@
+void BinarySearchTree<T>::remove(const T&) [with T = int]: Assertion `root' 
