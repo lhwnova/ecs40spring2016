@@ -17,7 +17,7 @@ template <typename T>
 void BinarySearchTree<T>::find(const T &value) const
 {
   assert(root != NULL);
-  BSTNode<T>* result = find(root, value);
+  const BSTNode<T>* result = find(root, value);
   
   if(!result) // not found
     cout << "Not found." << endl;
@@ -47,7 +47,7 @@ void BinarySearchTree<T>::postOrder() const
 } // postOrder
 
 template <typename T>
-void BinarySearchTree<T>::insert(BSTNode<T> *t, const T &value) const
+void BinarySearchTree<T>::insert(BSTNode<T> *t, const T &value)
 {
   if(t->data < value)
   {
@@ -73,7 +73,8 @@ void BinarySearchTree<T>::insert(BSTNode<T> *t, const T &value) const
 } // recursive insert()
 
 template <typename T>
-BSTNode<T>* BinarySearchTree<T>::find(BSTNode<T>* t, const T &value) const
+const BSTNode<T>* BinarySearchTree<T>::find(const BSTNode<T>* t, const T &value)
+const
 {
   if(!t)
     return NULL;
@@ -89,7 +90,7 @@ BSTNode<T>* BinarySearchTree<T>::find(BSTNode<T>* t, const T &value) const
 
 
 template <typename T>
-void BinarySearchTree<T>::remove(BSTNode<T> * &t, const T &value) const
+void BinarySearchTree<T>::remove(BSTNode<T> * &t, const T &value)
 {
   assert(t != NULL);
   
@@ -119,7 +120,7 @@ void BinarySearchTree<T>::remove(BSTNode<T> * &t, const T &value) const
           else // two children
             if(t->left && t->right)
             {
-              BSTNode<T>* temp = findMin(t->right); T foo = temp->data;
+              const BSTNode<T>* temp = findMin(t->right); T foo = temp->data;
               remove(t, temp->data); t->data = foo;
             } // two children
   
@@ -127,7 +128,7 @@ void BinarySearchTree<T>::remove(BSTNode<T> * &t, const T &value) const
 
 
 template <typename T>
-void BinarySearchTree<T>::inOrder(BSTNode<T> *t) const
+void BinarySearchTree<T>::inOrder(const BSTNode<T> *t) const
 {
   if(!t) // t is NULL
     return;
@@ -138,7 +139,7 @@ void BinarySearchTree<T>::inOrder(BSTNode<T> *t) const
 } // recursive inOrder
 
 template <typename T>
-void BinarySearchTree<T>::postOrder(BSTNode<T> *t) const
+void BinarySearchTree<T>::postOrder(const BSTNode<T> *t) const
 {
   if(!t) // t is NULL
     return;
@@ -167,7 +168,7 @@ BinarySearchTree<T>::~BinarySearchTree()
 
 
 template <typename T>
-BSTNode<T>* BinarySearchTree<T>::findMin(BSTNode<T> *t) const
+const BSTNode<T>* BinarySearchTree<T>::findMin(const BSTNode<T> *t) const
 {
   if(!t->left)
     return t;
@@ -175,4 +176,3 @@ BSTNode<T>* BinarySearchTree<T>::findMin(BSTNode<T> *t) const
   t = findMin(t->left);
   return t;
 } // findMin()
-

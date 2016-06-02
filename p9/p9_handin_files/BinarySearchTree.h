@@ -23,13 +23,13 @@ template <typename T>
 class BinarySearchTree
 {
   BSTNode<T>* root;
-  void insert(BSTNode<T> *t, const T &value) const;
-  BSTNode<T>* find(BSTNode<T>* t, const T &value) const;
-  void remove(BSTNode<T> * &t, const T &value) const;
-  void inOrder(BSTNode<T> *t) const;
-  void postOrder(BSTNode<T> *t) const;
+  void insert(BSTNode<T> *t, const T &value);
+  const BSTNode<T>* find(const BSTNode<T>* t, const T &value) const;
+  void remove(BSTNode<T> * &t, const T &value);
+  void inOrder(const BSTNode<T> *t) const;
+  void postOrder(const BSTNode<T> *t) const;
   void makeEmpty(BSTNode<T> *t) const;
-  BSTNode<T>* findMin(BSTNode<T> *t) const;
+  const BSTNode<T>* findMin(const BSTNode<T> *t) const;
 public:
   BinarySearchTree():root(NULL){};
   ~BinarySearchTree();
