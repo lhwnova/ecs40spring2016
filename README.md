@@ -31,7 +31,7 @@
 
 stvli@ucdavis.edu,Li,Steven
 
-## copyright
+## copyright © 
 
 copyright © 2016 Zhiying Li
 
