@@ -25,7 +25,7 @@
 | ./**p6/p6_handin** | `Done(50/50)` |  `May-07, 2016`  |  `May-10, 2016`  |  `May-11, 2016`  |      `Steven`       |
 | ./**p7/p7_handin** | `Done(50/50)` |  `May-15, 2016`  |  `May-16, 2016`  |  `May-18, 2016`  |      `Steven`       |
 | ./**p8/p8_handin** | `Done(50/50)` |  `May-23, 2016`  |  `May-24, 2016`  |  `May-25, 2016`  |      `Steven`       |
-| ./**p9/p9_handin** |     `Done`     |  `May-30, 2016`  |  `May-31, 2016`  | `June-01, 2016`  |      `Steven`       |
+| ./**p9/p9_handin** |     `Done`    |  `May-30, 2016`  |  `May-31, 2016`  | `June-01, 2016`  |      `Steven`       |
 
 ## authors.csv
 
@@ -35,4 +35,4 @@ stvli@ucdavis.edu,Li,Steven
 
 copyright © 2016 Zhiying Li
 
-**Since this is a course assignment, it is not open sourced. All the codes in this repository are only aviliable to be viewed, edited, discussed, printed and transfered by author and course instructors. Anyone else are restricted to do so without the constents of two authors.**
+**Since this is a course assignment, it is not open sourced. All the codes in this repository are only aviliable to be viewed, edited, discussed, printed and transfered by author and course instructors. Anyone else are restricted to do so without the constents of the author.**
