@@ -12,7 +12,7 @@
 
 ## Programing Assignments
 
-*(Last time update: June. 1, 2016)*
+*(Last time update: June. 4, 2016)*
 
 | Programs           |     **Status**     |  **StartDate**   |   **EndDate**    |   **Due Day**    | **`Handin` Person** |
 | ------------------ | :----------------: | :--------------: | :--------------: | :--------------: | :-----------------: |
