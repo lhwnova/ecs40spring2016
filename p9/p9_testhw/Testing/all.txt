@@ -1,0 +1,5154 @@
+#include "flight.h"
+#include "utilities.h"
+
+void readAllFlights (Flight** flights, int* numFlights)
+{
+  FILE* fp_in = fopen(INPUT_FILE, "r");
+  
+  if (fp_in == (FILE*) NULL)
+  {
+    printf("error reading file\n");
+    exit(EXIT_FAILURE);
+  } //if error reading file
+  
+  fscanf(fp_in, "%d", numFlights);
+  *flights = (Flight*) malloc (*numFlights * sizeof(Flight));
+  
+  for (int i = 0; i < *numFlights; i++)
+  {
+    readFlight(fp_in, &(*flights)[i]);
+  } //iterate every flight to read them from file
+  
+  fclose(fp_in);
+} //read the first line and to create Flight array
+
+
+void readFlight (FILE* fp_in, Flight* flight)
+{
+  fscanf(fp_in, "%d\n", &(flight->flightNum));
+  fgets(flight->origin , MAX_ORIGIN_LENGTH, fp_in);
+  fgets(flight->destination, MAX_DESTINATION_LENGTH, fp_in);
+  
+  strtok(flight->origin, "\r\n");
+  strtok(flight->destination, "\r\n");
+  
+  flight->plane = (Plane*) malloc(sizeof(Plane));
+  readPlane(fp_in, &(flight->plane));
+} //read each flight from file
+
+
+void displayAllFlight(Flight* flights, int numFlights)
+{
+  printf("Flt# ");
+  printf(ORIGIN_PLACEHOLDER, "Origin\0");
+  printf("Destination\n");
+  
+  for (int i = 0; i < numFlights; i++)
+  {
+    printf(FLIGHT_NUM_PLACEHOLDER, flights[i].flightNum);
+    printf(ORIGIN_PLACEHOLDER, flights[i].origin);
+    printf("%s\n", flights[i].destination);
+  } //iterate each fight and display them
+  
+  return;
+} //display all the flight in file
+
+
+void writeAllFlights (int numFlights, Flight* flights)
+{
+  FILE* fp_out = fopen(OUTPUT_FILE, "w");
+  
+  if (fp_out == (FILE*) NULL)
+  {
+    printf("error writing file\n");
+    exit(EXIT_FAILURE);
+  } //if error reading file
+  
+  fprintf(fp_out, "%d\n", numFlights);
+  
+  for (int i = 0; i < numFlights; i++)
+  {
+    writeFlight(fp_out, flights[i]);
+  } //iterate through the flight and call writeFlight
+  
+  deleteAllFlights(numFlights, flights);
+  fclose(fp_out);
+} //write all flight
+
+
+void writeFlight(FILE* fp_out, Flight flight)
+{
+  fprintf(fp_out, "%d\n", flight.flightNum);
+  fprintf(fp_out, "%s\n", flight.origin);
+  fprintf(fp_out, "%s\n", flight.destination);
+  writePlane(fp_out, flight.plane);
+} //write one flight and call writePlane
+
+
+void deleteAllFlights (int numFlights, Flight* flights)
+{
+  
+  for (int i = 0; i < numFlights ; i++ )
+  {
+    deletePlane(flights[i].plane);
+  } //iterate trought the file to delete the plane in each flight
+  
+  free(flights);
+} //deleat the flight array that has been created in heaps
+
+
+void addPassenger(Flight** flights, int numFlights)
+{
+  displayAllFlight(*flights, numFlights);
+  printf("\nFlight number (0 = exit): ");
+  int flightNumber = getNumber();
+  int flightIndex;
+  
+  while(!isValidFlightNumber(flightNumber, *flights, numFlights))
+  {
+    
+    if (flightNumber == EXIT)
+    {
+      return;
+    } //if the flight number is exit, then exit
+    
+    printf("\nFlight number (0 = exit): ");
+    flightNumber = getNumber();
+  } //add passenger to the passenger matrix in plane struct
+  
+  flightIndex = getFlightIndex(flightNumber, *flights, numFlights);
+  
+  if(!isFullPlane(flightNumber, (*flights)[flightIndex].plane))
+  {
+    changePlane(&((*flights)[flightIndex].plane));
+  } //if the plane is full, skip
+  
+} //make cange to char*** passenger
+
+
+int isValidFlightNumber(int flightNumber, Flight* flights, int numFlights)
+{
+  
+  if (flightNumber == EXIT)
+  {
+    return 0;
+  } //if the filght nubmer is eixt, then exit
+  
+  if (flightNumber == INVALID)
+  {
+    printf("That is an invalid flight nunber.\n");
+    printf("Please try again.\n");
+    return 0;
+  } //if the flight number is invalid, print error message
+  
+  for(int i = 0; i < numFlights; i++)
+  {
+    if(flightNumber == flights[i].flightNum)
+    {
+      return 1;
+    } //if the flight nubmer exist
+  } //iterate every flight in the array
+  
+  printf("We do not have a flight number %d.\n", flightNumber);
+  printf("Please try again.\n");
+  return 0;
+} //to check if the flight number is valid or not
+
+
+int getFlightIndex(int flightNumber, Flight* flights, int numFlights)
+{
+  for(int i = 0; i < numFlights; i++)
+  {
+    if(flightNumber == flights[i].flightNum)
+    {
+      return i;
+    } //if the flighter number is found
+  } //iterate every flight in the array
+  
+  return 0;
+} //get the index of the flight
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "flight.h"
+#include "plane.h"
+#include "utilities.h"
+
+int main()
+{
+  int numFlights, choice;
+  Flight* flights;
+  readAllFlights(&flights, &numFlights);
+  meun();
+  
+  while(firstMeun(&choice))
+  {
+    if(choice == CONTINUE) // chose CONTINUE
+    {
+      addPassenger(&flights, numFlights);
+      meun();
+    } // if, it will call addPassenger()
+  } // while, the program will keep if CONTINUE or QUIT is not chosen
+  
+  writeAllFlights(numFlights, flights);
+  
+  return 0;
+} // main
+#include "plane.h"
+#include "flight.h"
+#include "utilities.h"
+
+void readPlane (FILE* fp_in, Plane** plane)
+{
+  int rowNum, rowI, colI, length;
+  char colLetter, passenger_name[MAX_PASSENGER_NAME_LENGTH];
+  fscanf(fp_in, "%d ", &((*plane)->rows));
+  fscanf(fp_in, "%d ", &((*plane)->width));
+  fscanf(fp_in, "%d\n", &((*plane)->reserved));
+  (*plane)->passengers = (char***)malloc((*plane)->reserved * sizeof(char**));
+  
+  for (int row = 0; row < (*plane)->rows; row++)
+  {
+    (*plane)->passengers[row] = (char**)malloc((*plane)->width * sizeof(char*));
+    
+    for (int col = 0; col < (*plane)->width; col++)
+    {
+      (*plane)->passengers [row][col] = (char*) NULL;
+    } //initialize all the passenger name to null
+  } //malloc the space passenger[row][col]
+  
+  for (int i = 0; i < (*plane)->reserved; i++)
+  {
+    fscanf(fp_in, "%d%c ", &rowNum, &colLetter);
+    fgets(passenger_name,  MAX_PASSENGER_NAME_LENGTH , fp_in);
+    strtok(passenger_name, "\r\n");
+    
+    rowI = rowNum - 1;
+    colI = colLetter - SEAT_BASE;
+    length = (int) strlen(passenger_name) + 1;
+    (*plane)->passengers[rowI][colI] = (char*)malloc(length * sizeof(char));
+    strcpy((*plane)->passengers [rowI][colI], passenger_name);
+  } //add reserved people to the matrix
+} //read plane from file
+
+
+void writePlane(FILE* fp_out, Plane* plane)
+{
+  int rowI, colI, rowN, colN;
+  fprintf(fp_out, "%d %d %d\n", plane->rows, plane->width, plane->reserved);
+  
+  for (rowI = 0; rowI < plane->rows; rowI++)
+  {
+    for (colI = 0; colI < plane->width; colI++)
+    {
+      if (plane->passengers[rowI][colI] != (char*) NULL)
+      {
+        rowN = rowI + 1;
+        colN = colI + SEAT_BASE;
+        fprintf(fp_out, "%d%c %s\n", rowN, colN, plane->passengers[rowI][colI]);
+      } //write passenger[rowI][colI] to the output file
+    } //iterate each col
+  } //iterate each row
+} //write plane to file
+
+
+void deletePlane(Plane* plane)
+{
+  for (int row = 0; row < plane->rows; row++)
+  {
+    for (int col = 0; col < plane->width; col++)
+    {
+      free(plane->passengers[row][col]);
+    } //iterate each col to free passenger[row][col]
+    
+    free(plane->passengers[row]);
+  } //iterate each row to free passenger[row]
+  
+  free(plane->passengers);
+  free(plane);
+} //free plane that has been malloced in memory
+
+
+void displayBoardPlane(Plane* plane)
+{
+  printf("ROW# ");
+  
+  for(int i = 0; i < plane->width; i++)
+  {
+    printf("%c", i + SEAT_BASE);
+  }//print the seat letter in the first row
+  
+  printf("\n");
+  
+  for (int row = 0; row < plane->rows; row++)
+  {
+    printf(" %d   ", row + 1);
+    
+    for (int col = 0; col < plane->width; col++)
+    {
+      if (plane->passengers[row][col] == (char*)NULL)
+      {
+        printf("-");
+      } //if the seat is not reserved
+      else //if the seat is reserved
+      {
+        printf("X");
+      } //if the seat is reserved
+    } //iterate each col to print the seat
+    
+    printf("\n");
+  }//iterate each row to print out the seat
+  
+  printf("\nX = reserved.\n\n");
+  return;
+} //display the plane board
+
+
+void changePlane(Plane** plane)
+{
+  char width, passengerName[MAX_PASSENGER_NAME_LENGTH];
+  int rowNum, rowI, colI, nameLength;
+  printf("Please enter the name of the passenger: ");
+  fgets(passengerName, MAX_PASSENGER_NAME_LENGTH , stdin);
+  strtok(passengerName, "\r\n");
+  nameLength = (int) strlen(passengerName) + 1;
+  displayBoardPlane(*plane);
+  getRowAndWidth(&rowNum, &width, *plane);
+  rowI = rowNum - 1;
+  colI = width - SEAT_BASE;
+  
+  while((*plane)->passengers[rowI][colI] != (char*)NULL)
+  {
+    printf("That seat is already occupied.\nPlease try again.\n\n");
+    getRowAndWidth(&rowNum, &width, *plane);
+    rowI = rowNum - 1;
+    colI = width - SEAT_BASE;
+  } //if the passenger seat is NULL then ask again
+  
+  (*plane)->passengers[rowI][colI] = (char*) malloc(nameLength * sizeof(char));
+  strcpy((*plane)->passengers[rowNum - 1][width - SEAT_BASE], passengerName);
+  (*plane)->reserved += 1;
+} //change those unreserved seats to be reserved
+
+
+void getRowAndWidth(int* row, char* width, Plane* plane)
+{
+  int max_row = plane->rows;
+  printf("Please enter the row of the seat you wish to reserve: ");
+  *row = getNumber();
+  
+  while(!(*row > 0 && *row < max_row + 1))
+  {
+    if (*row == INVALID) //if user enter invalid
+      printf("That is an invalid row number.\n");
+    else //if user enter a number but out of range
+      printf("There is no row #%d on this flight.\n", *row);
+    printf("Please try again.\n\n");
+    printf("Please enter the row of the seat you wish to reserve: ");
+    *row = getNumber();
+  } //if the row is out of board, it will ask again
+  
+  printf("Please enter the seat letter you wish to reserve: ");
+  *width = getchar();
+  skipAllTrailingChar(*width);
+} //ask users for row number and width letter
+
+
+int isFullPlane(int flightNumber, Plane* plane)
+{
+  for(int row = 0; row < plane->rows; row++)
+  {
+    for (int col = 0; col < plane->width; col++)
+    {
+      if (plane->passengers[row][col] == (char*) NULL)
+      {
+        return 0;
+      } //if this seat is not occupied
+    } //iterate every col
+  } //iterate every row
+  
+  printf("We are sorry but Flight #%d is full.\n", flightNumber);
+  return 1;
+} //determine if a plane is full or not
+
+#include "utilities.h"
+#include "flight.h"
+
+int getNumber()
+{
+  char ch = getchar(), *numStr = NULL;
+  
+  if ((ch = skipLeadingWhite(ch)) && ch == '\n')
+    return INVALID;
+  ch = skipLeadingZero(ch);
+  
+  if(!isspace(ch))
+  {
+    if (isdigit(ch))
+    {
+      ch = getNumStr(ch, &(numStr));
+      
+      if (!allFollowingIsWhite(ch))
+      {
+        free(numStr);
+        return skipAllTrailingChar(ch);
+      } //if all the following is not whitespace
+    } //if nextone is dight
+    else //is nextone is nondight
+      return skipAllTrailingChar(ch);
+  } //if is not white space after it.
+  else  // next one is whitespace or newline character
+    if (allFollowingIsWhite(ch)) //if all the following is whitespace
+      return 0;
+    else //if all the following is not whtespace
+      return INVALID;
+  
+  int num = strToint(numStr);
+  free(numStr);
+  return num;
+} //get valid number that is not overflowed
+
+
+char skipLeadingWhite(char ch)
+{
+  while(isspace(ch) && ch != NEWLINE_CHARACTER)
+  {
+    ch = getchar();
+  } //continue getting char until whitespacees encounter
+  
+  return ch;
+} //skip leading white
+
+
+char skipLeadingZero(char ch)
+{
+  while(ch == ZERO_CHAR)
+  {
+    ch = getchar();
+  } //continue getting char until first non-zero encounter
+  
+  return ch;
+} //skip leading zeor
+
+
+int allFollowingIsWhite(char ch)
+{
+  while (ch != NEWLINE_CHARACTER)
+  {
+    if (ch != WHITE_SPACE)
+    {
+      return 0;
+    } //if it is not white space
+    
+    ch = getchar();
+  } //iterate to the end
+  
+  return 1;
+} //iterate to the end to see if it only contains whitespace
+
+
+char getNumStr(char ch, char** numStr)
+{
+  int initial_size = INITIAL_NUM_SIZE, i = 0;
+  int* buffer_size = &initial_size;
+  *numStr = (char*) malloc(*buffer_size * sizeof(char));
+  
+  while (isdigit(ch))
+  {
+    (*numStr)[i] = ch;
+    i++;
+    
+    if(i == *buffer_size)
+    {
+      increaseSize(&(*numStr), buffer_size);
+    } //if the buffer size is met
+    
+    ch = getchar();
+  } //keep getting the char until first nondight is met
+  
+  (*numStr)[i] = NULL_TERMINATOR;
+  return ch;
+} //get number in string format
+
+
+void increaseSize(char** numStr, int* buffer_size)
+{
+  *buffer_size += SIZE_INCREASE;
+  char* newNumStr = (char*) realloc(*numStr, *buffer_size * sizeof(char));
+  *numStr = newNumStr;
+} //if the size if full, increase its size
+
+
+int strToint(char* numStr)
+{
+  int num = 0;
+  int digit;
+  
+  for (int i = 0; i < (int)strlen(numStr); i++)
+  {
+    digit = numStr[i] - ZERO_CHAR;
+    
+    if (addWillCauseOverflow(num, digit))
+    {
+      return INVALID;
+    } //if it will over flwo next
+    
+    num = DECIMAL * num + digit;
+  } //iterate throught he string and get the integer number
+  
+  return num;
+} //convert string to integer
+
+
+int addWillCauseOverflow(int numA, int numB)
+{
+  if(numA > (INT_MAX - numB) / DECIMAL)
+  {
+    return 1;
+  } //if numB > INT_MAX - numA
+  else //if numB <= INT_MAX - numA
+  {
+    return 0;
+  } //if numB <= INT_MAX - numA
+} //to determine if adding two number will over flwo nex
+
+
+void meun()
+{
+  printf("\nECS Flight Reservation Menu\n");
+  printf("0. Exit.\n");
+  printf("1. Add Passenger.\n");
+} //print out ecs flight menu
+
+
+int firstMeun(int* choice)
+{
+  printf("\nPlease enter your choice: ");
+  *choice = getNumber();
+  
+  switch (*choice)
+  {
+    case EXIT:
+      printf("Goodbye.\n");
+      break;
+    case CONTINUE:
+      break;
+    case INVALID:
+      printf("Your choice is invalid.\n");
+      printf("Please try again.\n");
+      break;
+    default:
+      printf("%d is not an available choice.\n", *choice);
+      printf("Please try again.\n");
+      break;
+  } // switch
+  
+  return *choice;
+} // print the first meun
+
+int skipAllTrailingChar (char ch)
+{
+  while(ch != NEWLINE_CHARACTER)
+  {
+    ch = getchar();
+  } //keep getting char until meet the newline character
+  
+  return INVALID;
+} //skip all the trailing chars
+#ifndef FLIGHT_H
+
+#define FLIGHT_H
+#define EXIT 0
+#define CONTINUE 1
+#define INVALID -1
+#define MAX_ORIGIN_LENGTH 20
+#define MAX_DESTINATION_LENGTH 20
+#define MAX_PASSENGER_NAME_LENGTH 80
+#define INPUT_FILE "reservations.txt"
+#define OUTPUT_FILE "reservations2.txt"
+#define FLIGHT_NUM_PLACEHOLDER "%-5d"
+#define ORIGIN_PLACEHOLDER "%-21s"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "plane.h"
+
+typedef struct
+{
+  int flightNum;
+  char origin[MAX_ORIGIN_LENGTH];
+  char destination[MAX_DESTINATION_LENGTH];
+  Plane *plane;
+} Flight;
+
+void readAllFlights (Flight** flights, int* numFlights);
+
+
+void readFlight (FILE* fp_in, Flight* flight);
+
+
+void displayAllFlight(Flight* flights, int numFlights);
+
+
+void writeAllFlights (int numFlights, Flight* flights);
+
+
+void writeFlight(FILE* fp_out, Flight flight);
+
+
+void deleteAllFlights (int numFlights, Flight* flights);
+
+
+void deleteFlight(Flight flight);
+
+
+void addPassenger(Flight** flights, int numFlights);
+
+
+int isValidFlightNumber(int flightNumber, Flight* flights, int numFlights);
+
+
+int getFlightIndex(int flightNumber, Flight* flights, int numFlights);
+
+
+#endif
+#ifndef PLANE_H
+
+#define PLANE_H
+#define SEAT_BASE 'A'
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct
+{
+  int rows;
+  int width;
+  int reserved;
+  char ***passengers;
+} Plane;
+
+
+void readPlane (FILE* fp_in, Plane** plane);
+
+
+void writePlane(FILE* fp_out, Plane* plane);
+
+
+void displayBoardPlane(Plane* plane);
+
+
+void deletePlane(Plane* plane);
+
+
+void changePlane(Plane** plane);
+
+
+void getRowAndWidth(int* row, char* width, Plane* plane);
+
+
+int isFullPlane(int flightNumber, Plane* plane);
+
+
+#endif
+#ifndef UTILITIES_H
+#define UTILITIES_H
+#define INITIAL_NUM_SIZE 10
+#define SIZE_INCREASE 2
+#define DECIMAL 10
+#define NEWLINE_CHARACTER '\n'
+#define WHITE_SPACE ' '
+#define NULL_TERMINATOR '\0'
+#define ZERO_CHAR '0'
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <limits.h>
+#include <string.h>
+
+
+int getNumber();
+
+
+char skipLeadingWhite(char ch);
+
+
+char skipLeadingZero(char ch);
+
+
+int allFollowingIsWhite(char ch);
+
+
+char getNumStr(char ch, char** numStr);
+
+
+void increaseSize(char** numStr, int* buffer_size);
+
+
+int strToint(char* numStr);
+
+
+int addWillCauseOverflow(int numA, int numB);
+
+
+void meun();
+
+
+int firstMeun(int* choice);
+
+
+int skipAllTrailingChar (char ch) ;
+
+#endif
+#!/bin/bash
+
+dir1=$1
+dir2=$2
+dir3=$3
+
+if [ $# -ne 3 ] || [ ! -d "$dir1" ] || [ ! -d "$dir2" ] || [ -f "$dir3" ] ; then
+  echo "usage: cpdirs.sh source_directory1 source_directory2 dest_directory"
+  exit
+fi
+
+if [[ ! -e "$dir3" ]]; then
+	mkdir $dir3
+fi
+
+homepath=`pwd`
+
+for file1 in `ls $dir1`
+do
+  if [[ -f "$homepath/$dir1/$file1" ]]; then
+    cp $homepath/$dir1/$file1 $homepath/$dir3
+  fi
+done
+
+for file2 in `ls $dir2`
+do
+  if [[ -f "$homepath/$dir2/$file2" ]]; then
+    cp $homepath/$dir2/$file2 $homepath/$dir3
+  fi
+done
+
+
+for file1 in `ls $dir1`
+do
+  for file2 in `ls $dir2`
+  do
+    if [[ -f "$homepath/$dir2/$file2" ]] && [[ -f "$homepath/$dir1/$file1" ]] && [[ $file1 = $file2 ]]; then
+      if [ $homepath/$dir1/$file1 -nt $homepath/$dir2/$file2 ]; then
+      	cp -f $homepath/$dir1/$file1 $homepath/$dir3
+      else
+  	cp -f $homepath/$dir2/$file2 $homepath/$dir3
+      fi
+    fi
+  done
+done
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+  echo "usage: grepdir.sh directory pattern [-grep option]*"
+  exit
+fi
+
+path=$1
+shift
+pattern=$1
+shift
+
+if [[ ! -d "$path" ]] ; then
+  echo "usage: grepdir.sh directory pattern [-grep option]*"
+  exit
+fi
+
+option=''
+for arg in $@; do
+  if [[ "$arg" != -* ]] ; then
+    echo "usage: grepdir.sh directory pattern [-grep option]*"
+    exit
+  fi
+  option=$option" "$arg
+done
+
+find  $path -type f -exec grep $option $pattern {} \;
+#!/bin/bash
+
+if [ $# -lt 1 ] ; then
+	echo -e "Executable name required.\nusage: makemake.sh executable_name"
+  	exit
+fi
+
+execName=$1
+
+
+shift
+
+option='-ansi -Wall -g -c'
+temp=''
+for arg in $@; do
+  temp=$temp" "$arg
+done
+option=$option$temp
+
+optionGcc='-ansi -Wall -g -o'
+
+echo -n "$execName :" > Makefile
+for object in `ls *.cpp`
+do
+	echo -n " ${object%.cpp}.o" >> Makefile
+done
+echo -ne "\n" >> Makefile
+
+echo -en "\tg++ $optionGcc $execName$temp" >> Makefile
+for object in `ls *.cpp`
+do
+	echo -n " ${object%.cpp}.o" >> Makefile
+done
+echo -e "\n" >> Makefile
+
+
+for object in `ls *.cpp`
+do
+	echo -n "${object%.cpp}.o : $object "  >> Makefile
+	echo "`grep '^#include\s*"' $object | awk -F '"' '{ print $2 }' | tr '\n' ' '`" >> Makefile
+	echo -ne "\tg++ $option $object" >> Makefile
+	echo -e "\n" >> Makefile
+done
+
+
+echo "clean : " >> Makefile
+echo -en "\trm -f $execName" >> Makefile
+for object in `ls *.cpp`
+do
+	echo -n " ${object%.cpp}.o " >> Makefile
+done
+echo -ne "\n" >> Makefile
+#!/bin/bash
+
+if [ $# -eq 0 ] ; then
+	echo "usage: uncomp.sh {filelist}+"
+  	exit
+fi
+
+for arg in $@; 
+do
+	case $arg in
+		*.tar.gz) tar -xzf $arg ;;
+		*.tgz) tar -xzf $arg ;;
+                *.gz) gzip -d $arg ;;
+		*.tar) tar xopf  $arg ;;
+		*.zip) unzip -q $arg ;;
+		*) echo "uncomp.sh: $arg has no compression extension."
+	esac
+	shift
+done
+#include <cstring>
+#include <fstream>
+#include <iomanip>
+
+#include "flight.h"
+#define IGNORE_TIMES 256
+#define SH_FLIGHT_NUM 5
+#define SH_ORGIN 21
+
+using namespace std;
+
+void Flight::construcFlight(ifstream &inf)
+{
+  inf >> flightNum;
+  inf.ignore(IGNORE_TIMES, '\n');
+  inf.getline(origin, MAX_NAME_SIZE);
+  strtok(origin, "\r\n");
+  inf.getline(destination, MAX_NAME_SIZE);
+  strtok(destination, "\r\n");
+  plane = new Plane(inf);
+} // accessFlight
+
+
+void Flight::printFlightInfo() const
+{
+  cout << left << setw(SH_FLIGHT_NUM) << flightNum 
+       << left << setw(SH_ORGIN) << origin 
+       << destination << endl;
+} // printFlightInfo()
+
+
+void Flight::writeFlight(ofstream &outf) const
+{
+  outf << flightNum << endl;
+  outf << origin << endl;
+  outf << destination << endl;
+  
+  plane->writePlane(outf);
+} // writeFlight()
+
+Flight::~Flight()
+{
+  delete plane;
+} // Flight destruc
+
+int Flight::getFlightNumber()
+{
+  return flightNum;
+}  // getFlightNumber()
+
+
+void Flight::addPassenger()
+{
+  if(!plane->addPassenger())
+    cout << "We are sorry but Flight #" << flightNum << " is full.\n";
+}  // addPassenger()
+#include <iostream>
+#include <fstream>
+
+#include "flight.h"
+#include "utilities.h"
+
+#define DONE 0
+#define MAX_CHOICE 1
+
+using namespace std;
+
+void writeFlights(Flight *flights, const int numFlights)
+{
+  int i;
+  ofstream outf;
+  outf.open("reservations2.txt");
+  
+  outf << numFlights << endl;
+  
+  for(i = 0; i < numFlights; i++)
+    flights[i].writeFlight(outf);
+  
+  outf.close();
+}  // freeFlights()
+
+
+Flight* readFlights(int *numFlights)
+{
+  Flight *flights;
+  int i;
+  
+  ifstream inf;
+  inf.open("reservations.txt");
+  
+  inf >> *numFlights;
+  flights = new Flight[*numFlights];
+  
+  for(i = 0; i < *numFlights; i++)
+  {
+    flights[i].construcFlight(inf);
+  } //readFlight
+  
+  inf.close();
+  return flights;
+} // readFlights()
+
+
+void deleteFlights(Flight *flights)
+{
+  delete [] flights;
+}  // freeFlights()
+
+
+int getChoice()
+{
+  int choice;
+  cout << "\nECS Flight Reservation Menu\n";
+  cout << "0. Exit.\n";
+  cout << "1. Add Passenger.\n";
+  
+  do
+  {
+    cout << "\nPlease enter your choice: ";
+    choice = (int) getNumber();
+    
+    if(choice == ERROR)
+    {
+      cout << "Your choice is invalid.\n";
+      cout << "Please try again.\n";
+    }  // if invalid format
+    else // choice is a valid number
+      if(choice < DONE || choice > MAX_CHOICE)
+      {
+        cout << choice << " is not an available choice.\n";
+        cout << "Please try again.\n";
+      }  // if choice out of range.
+  } while(choice < DONE || choice > MAX_CHOICE  || choice == ERROR);
+  
+  if(choice == DONE)
+    cout << "Goodbye.\n";
+  
+  return choice;
+} // getChoice()
+
+
+void addPassenger(Flight* flights, int numFlights)
+{
+  int i, flightNumber;
+  
+  cout << "Flt# Origin               Destination\n";
+  
+  for(i = 0; i < numFlights; i++)
+    flights[i].printFlightInfo();
+  
+  do
+  {
+    cout << "\nFlight number (0 = exit): ";
+    flightNumber = (int) getNumber();
+    
+    if(flightNumber > 0)
+    {
+      
+      for(i = 0; i < numFlights; i++)
+        if(flights[i].getFlightNumber() == flightNumber)
+        {
+          flights[i].addPassenger();
+          break;
+        }  // if found match of flight
+      
+      if(i == numFlights)
+      {
+        cout << "We do not have a flight number " << flightNumber << ".\n";
+        cout << "Please try again.\n";
+      }  // if flightNumber not found
+    }  // if flightNumber > 0
+    else // if flightNumer <= 0
+      if(flightNumber == ERROR)
+        cout << "That is an invalid flight number.\nPlease try again.\n";
+  }  while((flightNumber != 0 && i == numFlights) || flightNumber == ERROR);
+}  // addPassenger()
+
+
+int main(int argc, char** argv)
+{
+  int numFlights;
+  Flight *flights = readFlights(&numFlights);
+  
+  while(getChoice() != DONE)
+    addPassenger(flights, numFlights);
+  
+  writeFlights(flights, numFlights);
+  deleteFlights(flights);
+  return 0;
+} // main())
+#include <cstring>
+#include <fstream>
+
+#include "utilities.h"
+#include "plane.h"
+
+#define SPACE_OCCURE 1
+
+using namespace std;
+
+Plane::Plane(ifstream &inf)
+{
+  int row, numPassenger, seatNum;
+  char seat, name[MAX_NAME_SIZE];
+  inf >> rows >> width >> reserved;
+  passengers = new char**[rows];
+  
+  for(row = 0; row < rows; row++)
+  {
+    passengers[row] = new char*[width];
+    
+    for(seatNum = 0; seatNum < width; seatNum++)
+      passengers[row][seatNum] = NULL;
+  } // for each row
+  
+  for(numPassenger = 0; numPassenger < reserved; numPassenger++)
+  {
+    inf >> row >> seat;
+    inf.ignore(SPACE_OCCURE);
+    inf.getline(name, MAX_NAME_SIZE);
+    strtok(name, "\r\n");
+    seatNum = seat;
+    passengers[row - FIRST_ROW][seatNum - FIRST_SEAT]
+    = new char[strlen(name) + 1];
+    strcpy(passengers[row - FIRST_ROW][seatNum - FIRST_SEAT], name);
+  }  // for each passenger
+  
+} // accessPlane
+
+void Plane::displayGrid() const
+{
+  int row, seatNum = 0;
+  
+  cout << "ROW# ";
+  
+  for(seatNum = 0; seatNum < width; seatNum++)
+    putchar(seatNum + FIRST_SEAT);
+  
+  putchar('\n');
+  
+  for(row = 0; row < rows; row++)
+  {
+    printf("%2d   ", row + 1);
+    
+    for(seatNum = 0; seatNum < width; seatNum++)
+      if(passengers[row][seatNum])
+        putchar('X');
+      else  // empty seat
+        putchar('-');
+    
+    putchar('\n');
+  }  // for each r
+  
+  cout << "\nX = reserved." << endl;
+} // displayGrid()
+
+void Plane::writePlane(ofstream &outf) const
+{
+  int row, seatNum;
+  outf << rows << " " << width << " " << reserved << endl;
+  
+  for(row = 0; row < rows ; row++)
+    for(seatNum = 0; seatNum < width; seatNum++)
+    {
+      if(passengers[row][seatNum] != NULL)
+      {
+        outf << row + FIRST_ROW;
+        outf << (char) (FIRST_SEAT + seatNum) << " ";
+        outf << passengers[row][seatNum] << endl;
+      } // if it is null
+    } // a loop to delete menmory
+} // writePlane()
+
+Plane::~Plane()
+{
+  int row, seatNum;
+  
+  for(row = 0; row < rows; row++)
+  {
+    
+    for(seatNum = 0; seatNum < width; seatNum++)
+    {
+      if(passengers[row][seatNum] != NULL)
+      {
+        delete [] passengers[row][seatNum];
+      } // if NULL
+    } // for to cheak null pointer
+    
+    delete [] passengers[row];
+  }  // for row
+  
+  delete [] passengers;
+}  // destruc Plane
+
+
+int Plane::addPassenger()
+{
+  int row, seatNum;
+  char name[MAX_NAME_SIZE];
+  
+  if(reserved == rows * width)
+    return 0;  // false
+  
+  cout << "Please enter the name of the passenger: ";
+  cin.getline(name, MAX_NAME_SIZE);
+  strtok(name, "\r\n");
+  displayGrid();
+  
+  while(TRUE)
+  {
+    row = getRow();
+    cout << "Please enter the seat letter you wish to reserve: ";
+    seatNum = cin.get() - FIRST_SEAT;
+    
+    while(cin.get() != '\n');
+    
+    if(passengers[row - FIRST_ROW][seatNum] == NULL)
+      break;
+    
+    cout << "That seat is already occupied.\nPlease try again.\n";
+  } // while occupied seat
+  
+  passengers[row - FIRST_ROW][seatNum] = new char[strlen(name) + 1];
+  strcpy(passengers[row - FIRST_ROW][seatNum], name);
+  reserved++;
+  return 1;
+}  // addPassenger()
+
+
+int Plane::getRow() const
+{
+  int row;
+  
+  do
+  {
+    cout << "\nPlease enter the row of the seat you wish to reserve: ";
+    row = (int) getNumber();
+    
+    if(row == ERROR)
+      cout << "That is an invalid row number.\nPlease try again.\n";
+    else  // valid row number
+      if(row < 1 || row > rows)
+        cout << "There is no row #" << row
+        << " on this flight.\nPlease try again.\n";
+  }  while(row < 1 || row > rows); // while to ask user
+  
+  return row;
+} // getRow()
+#include <iostream>
+#include <ctype.h>
+#include <limits.h>
+#include "utilities.h"
+
+#define TEN 10
+#define ASCII_ZERO '0'
+
+using namespace std;
+
+long long getNumber()
+{
+  long long number = 0, OK = 1;
+  char c;
+  
+  for(c = cin.get(); isspace(c) && c != '\n'; c = cin.get());
+  
+  if(isdigit(c))
+  {
+    do
+    {
+      number = number * TEN + c - ASCII_ZERO;
+      c = cin.get();
+    }  while(isdigit(c) && number <= INT_MAX);
+    
+    while(c != '\n' && isspace(c))
+      c = cin.get();
+    
+    if(c != '\n' || number > INT_MAX)
+      OK = 0;
+  }  // if first non-space is a digit
+  else // first non-space is not a digit
+    OK = 0;  // false
+  
+  while(c != '\n')
+    c = cin.get();
+  
+  if(OK)
+    return number;
+  else  // invalid number
+    return ERROR;
+  
+} // getNumber()
+
+#ifndef FLIGHT_H
+#define	FLIGHT_H
+
+#include <iostream>
+#include "plane.h"
+
+#define MAX_CITY_LENGTH 20
+
+using namespace std;
+
+class Flight 
+{
+private:
+  int flightNum;
+  char origin[MAX_CITY_LENGTH];
+  char destination[MAX_CITY_LENGTH];
+  Plane *plane;
+public:
+  ~Flight();
+  void construcFlight(ifstream &inf);
+  void printFlightInfo() const;
+  void writeFlight(ofstream &outf) const;
+  int getFlightNumber();
+  void addPassenger();
+}; // Flight class
+
+
+#endif	// FLIGHT_H#ifndef PLANE_H
+#define	PLANE_H
+#define TRUE 1
+
+#include <iostream>
+
+#define MAX_NAME_SIZE 80
+#define FIRST_ROW 1
+#define FIRST_SEAT 'A'
+
+using namespace std;
+
+class Plane
+{
+private:
+  int rows;
+  int width;
+  int reserved;
+  char ***passengers;
+  void displayGrid() const;
+public:
+  ~Plane();
+  Plane(ifstream &inf);
+  void writePlane(ofstream &outf) const;
+  int addPassenger();
+  int getRow() const;
+}; // Plane class
+
+#endif
+#ifndef UTIL_H
+#define	UTIL_H
+
+#define ERROR -1
+
+long long getNumber();
+
+#endif	// UTIL_H
+
+#include <string.h>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+
+#include "flight.h"
+
+using namespace std;
+
+void Flight::removeFlight(int const flightNumber)
+{
+  flightNum = TOUS;
+  plane->removeFlight(flightNumber);
+} //
+
+
+void Flight::removePassenger(int const flightNumber) const
+{
+  char name[MAX_NAME_SIZE];
+  cout << "Passengers on Flight #" << flightNumber << endl;
+  plane->showPassenger();
+  cout << "\nName of passenger to remove: ";
+  cin.getline(name, MAX_NAME_SIZE);
+  strtok(name, "\n\r");
+  
+  plane->removePassenger(flightNumber, name);
+} //
+
+
+void Flight::addFlight(int const flightNumber)
+{
+  flightNum = flightNumber;
+  cout << "Origin: ";
+  cin.getline(origin, MCILEN);
+  cout << "Destination: ";
+  cin.getline(destination, MCILEN);
+
+  plane = new Plane();
+  plane->addFlight();
+} //
+
+
+void Flight::addPassenger(int const flightNum) const
+{
+  if(!plane->addPassenger(flightNum))
+    cout << "We are sorry but Flight #" << flightNum << " is full.\n";
+}  // addPassenger()
+
+Flight::~Flight()
+{
+  ofstream outf ("flights2.csv", ios::app);
+  outf << flightNum << ',' << origin << ',' << destination << ',';
+  plane->writePlane(outf, flightNum);
+
+  outf.close();
+  delete plane;
+}  // freeFlight()
+
+
+int Flight::getFlightNumber() const
+{
+  return flightNum;
+}  // getFlightNumber()
+
+
+void Flight::printFlightInfo() const
+{
+  cout << left << setw(4) << flightNum << ' ' << setw(20) 
+    << origin << ' '  << destination << endl;
+}  // printFlightInfo()
+
+
+void Flight::readFlight(ifstream &inf)
+{
+  inf >> flightNum;
+  inf.ignore(TEN, ',');
+  inf.getline(origin, MCILEN, ',');
+  inf.getline(destination, MCILEN, ',');
+  plane = new Plane(inf, flightNum);
+}  // readFlight()
+#include <iostream>
+#include <fstream>
+
+#include "flights.h"
+#include "flight.h"
+#include "utilities.h"
+
+using namespace std;
+
+void Flights::removeFlight()
+{
+  int i, flightNumber;
+  cout << "Existing Flights:\n";
+  cout << "\nFlt# Origin               Destination\n";
+  
+  for(i = 0; i < size; i++)
+    flights[i]->printFlightInfo();
+
+  cout << "\nFlight number to remove: ";
+  flightNumber = getNumber();
+  int j, k;
+
+  for (j = 0; j < size; j++)
+    if (flights[j]->getFlightNumber() == flightNumber)
+      break;
+  
+  flights[j]->removeFlight(flightNumber);
+  //Flight* temp = flights[j];
+  delete flights[j];
+
+  for(k = j + 1; k < size; k++) flights[k - 1] = flights[k];
+  
+  size--;
+} //
+
+
+void Flights::removePassenger() const
+{
+  int i, flightNumber;
+  cout << "Existing Flights:\n";
+  cout << "\nFlt# Origin               Destination\n";
+  
+  for(i = 0; i < size; i++)
+    flights[i]->printFlightInfo();
+
+  cout << "\nFlight number of passenger remove: ";
+  flightNumber = getNumber();
+  int j;
+
+  for (j = 0; j < size; j++)
+  {
+    if (flights[j]->getFlightNumber() == flightNumber)
+      break;
+  } //
+
+  flights[j]->removePassenger(flightNumber);
+} //
+
+
+void Flights::addFlight()
+{
+  int i, flightNumber;
+  cout << "Existing Flights:\n";
+  cout << "\nFlt# Origin               Destination\n";
+  
+  for(i = 0; i < size; i++)
+    flights[i]->printFlightInfo();
+
+  cout << "\nFlight number to add: ";
+  flightNumber = getNumber();
+  Flight* pFlight = new Flight();
+  pFlight->addFlight(flightNumber);
+  insert(pFlight);
+} //
+
+void Flights::addPassenger() const
+{
+  int i, flightNumber;
+  cout << "Flt# Origin               Destination\n";
+  
+  for(i = 0; i < size; i++)
+    flights[i]->printFlightInfo();
+  
+  do
+  {
+    cout << "\nFlight number (0 = exit): ";
+    flightNumber = getNumber();
+    
+    if(flightNumber > 0)
+    {
+      
+      for(i = 0; i < size; i++)
+        if(flights[i]->getFlightNumber() == flightNumber)
+        {
+          flights[i]->addPassenger(flightNumber);
+          break;
+        }  // if found match of flight
+      
+      if(i == size)
+      {
+        cout << "We do not have a flight number " << flightNumber << ".\n";
+        cout << "Please try again.\n";
+      }  // if flightNumber not found
+    }  // if flightNumber > 0
+    else // if flightNumer <= 0
+      if(flightNumber == NONE)
+        cout << "That is an invalid flight number.\nPlease try again.\n";
+  }  while((flightNumber != 0 && i == size) || flightNumber == NONE);
+} //
+
+Flights::Flights()
+{
+  size = ISIZE;
+  capacity = ICAPCITY;
+  flights = new Flight*[capacity];
+
+  for(int j = 0; j < capacity; j++)
+    flights[j] = NULL;
+  
+  ofstream outf("passengers3.dat");
+  outf.close();
+} //
+
+void Flights::readFlights()
+{
+  int i, numFlights;
+  ifstream inf  ("flights.csv");
+  inf >> numFlights;
+
+  for(i = 0; i < numFlights; i++)
+  {
+    Flight* pFlight = new Flight();
+    pFlight->readFlight(inf);
+    insert(pFlight);
+  } //
+  
+  inf.close();
+} //
+
+
+Flights::~Flights()
+{
+  int i;
+  ofstream outf ("flights2.csv");
+  outf << size << endl;
+  outf.close();
+  
+  for(i = 0; i < size; i++) delete flights[i];
+
+  delete [] flights;
+} //
+
+void Flights::insert(Flight* flight)
+{
+  size++;
+
+  while (size > capacity)
+  {
+    capacity = capacity * TWO; // double the capacity
+    Flight** temp = new Flight*[capacity];
+    
+    for(int k = 0; k < capacity; k++) temp[k] = NULL;
+
+    for (int j = 0; j < size ; j++) temp[j] = flights[j];
+
+    delete [] flights;
+    flights = temp;
+  } //
+  
+  int i, j;
+
+  for(i = 0; i < size ; i++)
+  {
+    if(flights[i] == NULL)
+    {
+      flights[i] = flight;
+      break;
+    } //
+    
+    if (flight->getFlightNumber() < flights[i]->getFlightNumber())
+    {
+      for (j = size - 1 ; j >= i ; j--)
+        flights[j + 1] = flights[j];
+      
+      flights[i] = flight;
+      break;
+    } //
+  } //
+} //
+// Author: Sean Davis 
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include "flight.h"
+#include "flights.h"
+#include "utilities.h"
+#include "passenger.h"
+
+
+using namespace std;
+
+static const int MAX_CHOICE = 4;
+
+enum CHOICE
+{
+  DONE = 0, ADD_PASSEN, REMOVE_PASSEN, ADD_FLIGHT, REMOVE_FLIGHT
+}; //
+
+
+int getChoice()
+{ 
+  int choice;
+  cout << "\nECS Flight Reservation Menu\n";
+  cout << "0. Exit.\n";
+  cout << "1. Add Passenger.\n";
+  cout << "2. Remove Passenger.\n";
+  cout << "3. Add Flight.\n";
+  cout << "4. Remove Flight.\n";
+
+  do
+  {
+    cout << "\nPlease enter your choice: ";
+    choice = getNumber();
+    
+    if(choice == ERROR)
+    {
+      cout << "Your choice is invalid.\n";
+      cout << "Please try again.\n";
+    }  // if invalid format
+    else // choice is a valid number
+      if(choice < DONE || choice > MAX_CHOICE)
+      {
+        cout << choice << " is not an available choice.\n";
+        cout << "Please try again.\n";
+      }  // if choice out of range.
+  } while(choice < DONE || choice > MAX_CHOICE  || choice == ERROR);
+  
+  if(choice == DONE)
+    cout << "Goodbye.\n";
+  
+  return choice;
+} // getChoice()
+
+int main(int argc, char** argv)
+{
+  //int numFlights;
+  Passenger::copyPassengers();
+  Flights flights;
+  flights.readFlights();
+
+  int option;
+
+  do
+  {
+    option = getChoice();
+
+    switch (option)
+    {
+      case ADD_PASSEN: 
+        flights.addPassenger(); 
+        break;
+      case REMOVE_PASSEN: 
+        flights.removePassenger(); 
+        break;
+      case ADD_FLIGHT: 
+        flights.addFlight(); 
+        break;
+      case REMOVE_FLIGHT: 
+        flights.removeFlight(); 
+        break;
+    } //
+
+  } while(option != DONE); //
+
+  return 0;
+} // main())
+
+#include <fstream>
+#include <ostream>
+#include <cstring>
+#include "passenger.h"
+
+void Passenger::copyPassengers()
+{
+  ifstream readIn;
+  readIn.open("passengers.dat", ios::binary | ios::in);
+  ofstream writeOut;
+  writeOut.open("passengers2.dat", ios::binary | ios::out);
+  readIn.seekg (ZERO, readIn.end);
+  int length = readIn.tellg();
+  readIn.seekg (ZERO, readIn.beg);
+  writeOut.seekp(ZERO, writeOut.beg);
+  Passenger pas;
+
+  while(readIn.tellg() < length)
+  {
+  	readIn.read((char*)&pas, sizeof(Passenger));
+  	writeOut.write((char*)&pas, sizeof(Passenger));
+  } //
+
+  readIn.close();
+  writeOut.close();
+} //
+
+Passenger::Passenger()
+{
+}; //
+
+Passenger::Passenger(short fN, short ro, char se, char* nam)
+{
+  flightNum = fN;
+  row = ro;
+  seat = se;
+  strcpy(name, nam);
+} //
+// Author: Sean Davis
+
+#include <string.h>
+#include <ctype.h>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include "plane.h"
+#include "passenger.h"
+#include "utilities.h"
+
+using namespace std;
+
+
+void Plane::removeFlight(int const flightNumber)
+{
+  int length;
+  fstream inOutF("passengers2.dat", ios::binary | ios::in | ios::out);
+  inOutF.seekg(INIT, inOutF.end);
+  length = inOutF.tellg();
+  inOutF.seekg(INIT, inOutF.beg);
+
+  int currentPos;
+  Passenger passe;
+
+  while (inOutF.tellg() < length)
+  {
+    currentPos = inOutF.tellg();
+    inOutF.read((char*)&passe, sizeof(Passenger));
+
+    if(passe.flightNum == flightNumber)
+    {
+      passengers[passe.row - 1][passe.seat - FSEAT] = EMPTY;
+      passe.flightNum = EMPTY;
+      inOutF.seekp(currentPos);
+      inOutF.write((char*)&passe, sizeof(Passenger));
+    } //
+  } //
+
+  inOutF.close();
+} //
+
+
+void Plane::removePassenger(int const flightNumber, char* const name)
+{
+  int length;
+  fstream inOutF("passengers2.dat", ios::binary | ios::in | ios::out);
+  inOutF.seekg(INIT, inOutF.end);
+  length = inOutF.tellg();
+  inOutF.seekg(INIT, inOutF.beg);
+
+  int currentPos;
+  Passenger passe;
+
+  while (inOutF.tellg() < length)
+  {
+    currentPos = inOutF.tellg();
+    inOutF.read((char*)&passe, sizeof(Passenger));
+
+    if(passe.flightNum == flightNumber)
+    {
+      if(strcmp(passe.name, name) == 0)
+      {
+        passengers[passe.row - 1][passe.seat - FSEAT] = EMPTY;
+        passe.flightNum = EMPTY;
+        inOutF.seekp(currentPos);
+        inOutF.write((char*)&passe, sizeof(Passenger));
+        break;
+      }   //
+    }  //
+  } //
+
+  inOutF.close();
+} //
+
+
+void Plane::showPassenger() const
+{
+  int row, seatNum;
+  
+  ifstream readIn;
+  readIn.open("passengers2.dat", ios::binary | ios::in);
+
+  Passenger passe;
+
+  for(row = 0; row < rows; row++)
+    for(seatNum = 0; seatNum < width; seatNum++)
+    {
+      if(passengers[row][seatNum] != EMPTY)
+      {
+        readIn.seekg(passengers[row][seatNum]);
+        readIn.read((char*)&passe, sizeof(Passenger));
+        cout <<  passe.name  << endl;      
+      } //
+    } //
+  
+  readIn.close();
+
+} //
+
+void Plane::addFlight()
+{
+  cout << "Rows: ";
+  rows = getNumber();
+  cout << "Width: ";
+  width = getNumber();
+
+  int row, seatNum;
+  passengers = new int* [rows];
+  
+  for(row = 0; row < rows; row++)
+  {
+    passengers[row] = new int[width];
+    
+    for(seatNum = 0; seatNum < width; seatNum++)
+      passengers[row][seatNum] = EMPTY;
+  }// 
+}//
+
+
+Plane::Plane()
+{
+}; //
+
+Plane::Plane( ifstream &inf, int const flightNum)
+{
+  int row, seatNum, pos;
+  inf >> rows;
+  inf.ignore(LENT, ',');
+  inf >> width;
+  passengers = new int* [rows];
+  
+  for(row = 0; row < rows; row++)
+  {
+    passengers[row] = new int[width];
+    
+    for(seatNum = 0; seatNum < width; seatNum++)
+      passengers[row][seatNum] = EMPTY;
+  } // for each row
+  
+  ifstream readIn;
+  readIn.open("passengers2.dat", ios::binary | ios::in);
+  readIn.seekg (INIT, readIn.end);
+  int length = readIn.tellg();
+  readIn.seekg (INIT, readIn.beg);
+  Passenger passe;
+
+  while(readIn.tellg() < length)
+  {
+    pos = readIn.tellg();
+    readIn.read((char*)&passe, sizeof(Passenger));
+
+    if (passe.flightNum == flightNum)
+      passengers[passe.row - 1][passe.seat - FSEAT] = pos;
+
+  }//
+
+  readIn.close();
+}  // Plane()
+
+
+Plane::~Plane()
+{
+  for(int row = 0; row < rows; row++) delete [] passengers[row];
+  
+  delete [] passengers;
+}  // ~Plane()
+
+int Plane::totalPassenger() const
+{
+  int count = 0;
+
+  for(int i = 0; i < rows; i++)
+  {
+    for(int j = 0; j < width; j++)
+    {
+      if(passengers[i][j] != EMPTY)
+      {
+        count++;
+      }//
+    }//
+  }//
+
+  return count;
+} //
+
+bool Plane::addPassenger(int const flightNum)
+{
+  int row, seatNum;
+  char name[THIRTY];
+  
+  if(totalPassenger() == rows * width)
+    return false;
+  
+  cout << "Please enter the name of the passenger: ";
+  cin.getline(name, THIRTY);
+  showGrid();
+  
+  while(true)
+  {
+    row = getRow();
+    cout << "Please enter the seat letter you wish to reserve: ";
+    seatNum = cin.get() - FSEAT;
+    
+    while(cin.get() != '\n');
+    
+    if(passengers[row - FROW][seatNum] == EMPTY)
+      break;
+    
+    printf("That seat is already occupied.\nPlease try again.\n");
+  } // while occupied seat
+  
+  Passenger passe(flightNum, row, seatNum + FSEAT, name);
+  ofstream writeOut;
+  writeOut.open("passengers2.dat", ios::binary | ios::app);
+  writeOut.seekp(INIT, writeOut.end);
+  int a = writeOut.tellp();
+  writeOut.write((char*)&passe, sizeof(Passenger));
+  passengers[row - FROW][seatNum] = a;
+  writeOut.close();
+  return true;
+}  // addPassenger()
+
+
+int Plane::getRow() const
+{
+  int row;
+  
+  do
+  {
+    cout << "\nPlease enter the row of the seat you wish to reserve: ";
+    row = getNumber();
+    
+    if(row == ERROR)
+      cout << "That is an invalid row number.\nPlease try again.\n";
+    else  // valid row number
+      if(row < 1 || row > rows)
+        cout << "There is no row #" << row
+        << " on this flight.\nPlease try again.\n";
+    
+  }  while(row < 1 || row > rows);
+  
+  return row;
+} // getRow()
+
+
+void Plane::showGrid() const
+{
+  int row, seatNum = 0;
+  
+  printf("ROW# ");
+  
+  for(seatNum = 0; seatNum < width; seatNum++)
+    cout << char(seatNum + FSEAT);
+  
+  putchar('\n');
+  
+  for(row = 0; row < rows; row++)
+  {
+    printf("%2d   ", row + 1);
+    
+    for(seatNum = 0; seatNum < width; seatNum++)
+      if(passengers[row][seatNum] != EMPTY)
+        putchar('X');
+      else  // empty seat
+        putchar('-');
+    
+    putchar('\n');
+  }  // for each row
+  
+  printf("\nX = reserved.\n");
+}  // showGrid()
+
+
+void Plane::writePlane(ofstream &outf, int const flightNum) const
+{
+  int row, seatNum;
+
+  outf << rows << ',' << width << endl;
+  Passenger passe;
+
+  ofstream writeOut;
+  writeOut.open("passengers3.dat", ios::binary | ios::app);
+  ifstream readIn;
+  readIn.open("passengers2.dat", ios::binary | ios::in);
+
+  for(row = 0; row < rows; row++)
+    for(seatNum = 0; seatNum < width; seatNum++)
+    {
+      if(passengers[row][seatNum] != EMPTY)
+      {
+        readIn.seekg(passengers[row][seatNum]);
+        readIn.read((char*)&passe, sizeof(Passenger));
+
+        if (passe.flightNum != EMPTY)
+          writeOut.write((char*)&passe, sizeof(Passenger));
+      } //
+    } //
+  
+  readIn.close();
+  writeOut.close();
+}  // readPlane()
+// Author: Sean Davis
+
+#include <iostream>
+#include <ctype.h>
+#include <limits.h>
+#include "utilities.h"
+
+using namespace std;
+
+int getNumber()
+{
+  long long number = 0, OK = 1;
+  char c;
+
+  for(c = cin.get(); isspace(c) && c != '\n'; c = cin.get());
+
+  if(isdigit(c))
+  {
+    do
+    {
+      number = number * TEN + c - ASCII_ZERO;
+      c = cin.get();
+    }  while(isdigit(c) && number <= INT_MAX);
+
+    while(c != '\n' && isspace(c))
+      c = cin.get();
+
+    if(c != '\n' || number > INT_MAX)
+      OK = 0;
+  }  // if first non-space is a digit
+  else // first non-space is not a digit
+    OK = 0;  // false
+
+  while(c != '\n')
+    c = cin.get();
+    
+  if(OK)
+    return number;
+  else  // invalid number
+    return HH;
+  
+} // getNumber()
+
+#ifndef FLIGHT_H
+#define	FLIGHT_H
+
+#include <iostream>
+#include <fstream>
+#include "plane.h"
+
+using namespace std;
+
+
+class Flight
+{
+private:
+  static const int MAX_CITY_LENGTH = 20;
+  static const int TEN = 10;
+  static const int MAX_NAME_SIZE = 30;
+  static const int MCILEN = 20;
+  static const int TOUS = 10000;
+  int flightNum;
+  char origin[MAX_CITY_LENGTH];
+  char destination[MAX_CITY_LENGTH];
+  Plane *plane;
+public:
+  void removeFlight(int const flightNumber);
+  void removePassenger(int const flightNumber) const;
+  void addFlight(int const flightNumber);
+  void addPassenger(int const flightNum) const;
+  ~Flight();
+  int getFlightNumber() const;
+  void printFlightInfo() const;
+  void readFlight(ifstream &inf);
+  void writeFlight(ofstream &outf) const;
+} ; // flights
+ 
+
+
+
+#endif	// FLIGHT_H
+
+// author: Steven Li
+#include <iostream>
+#include "flight.h"
+
+#ifndef FLIGHTS_H
+#define FLIGHTS_H
+
+using namespace std;
+
+class Flights
+{
+private:
+  static const int NONE = -1;
+  static const int TWO = 2;
+  static const int ISIZE = 0;
+  static const int ICAPCITY = 2;
+  Flight** flights;
+  int size;
+  int capacity;
+public:
+  void removeFlight();
+  void removePassenger() const;
+  Flights();
+  void readFlights();
+  void addPassenger() const;
+  ~Flights();
+  void addFlight();
+  void insert(Flight* flight);
+}; //flights
+
+
+
+#endif // flights_hpp
+//author: Steven Li
+
+#ifndef PASSENGER_H
+#define	PASSENGER_H
+#include <fstream>
+#include "plane.h"
+
+using namespace std;
+
+class Passenger
+{
+  friend class Plane;
+private:
+  static const int NAME_L = 30;
+  static const int ZERO = 0;
+  short flightNum;
+  short row;
+  char seat;
+  char name[NAME_L];
+public:
+  static void copyPassengers();
+  Passenger();
+  Passenger(short flightNum, short row, char seat, char* name);
+}; // class Plane
+
+#endif	// PASSENGER_H//author: Steven Li
+
+#ifndef PLANE_H
+#define	PLANE_H
+#include <fstream>
+
+using namespace std;
+
+class Plane
+{
+private:
+  static const int EMPTY = -1;
+  static const int INIT = 0;
+  static const int LENT = 256;
+  static const int THIRTY = 30;
+  static const int FROW = 1;
+  static const char FSEAT = 'A';
+  int rows;
+  int width;
+  int reserved;
+  int** passengers;
+  int getRow() const;
+  void showGrid() const;
+  int totalPassenger() const;
+public:
+  void removeFlight(int const flightNumber);
+  void removePassenger(int const flightNumber, char* const name);
+  Plane();
+  Plane(ifstream &inf, int const flightNum);
+  ~Plane();
+  void addFlight();
+  bool addPassenger(int const flightNum);
+  void writePlane(ofstream &outf, int const flightNum) const;
+  void showPassenger() const; 
+}; // class Plane
+
+#endif	// PLANE_H
+
+
+#ifndef UTIL_H
+#define	UTIL_H
+
+static const int ERROR = -1;
+static const int TEN = 10;
+static const int SEVENTEEN = 17;
+static const char ASCII_ZERO = 'A' - SEVENTEEN;
+static const int HH = -1;
+
+int getNumber();
+
+#endif	// UTIL_H
+
+// Author: Sean Davis
+
+#include <cstring>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include "flight.h"
+
+using namespace std;
+
+
+ifstream& operator >> (ifstream& inf, Flight& flight)
+{ 
+  inf >> flight.flightNum;
+  inf.ignore(Flight::TEN, ',');
+  inf.getline(flight.origin, Flight::MAX_CITY_LENGTH, ',');
+  inf.getline(flight.destination, Flight::MAX_CITY_LENGTH, ',');
+  flight.plane = new Plane(flight.flightNum);
+  inf >> *(flight.plane);
+  return inf;
+}  // operator
+
+
+ostream& operator << (ostream& os, const Flight& flight)
+{
+  os << left << setw(Flight::FLIGHT_NUM_SPACE) << flight.flightNum 
+     << ' ' << setw(Flight::MAX_CITY_LENGTH) << flight.origin 
+     << ' ' << flight.destination << endl;
+  return os;
+} // operator
+
+
+const Flight& Flight::operator++(int) const
+{
+  ++(*plane);
+  return *this;
+}  // operator
+
+
+Flight::~Flight()
+{
+  ofstream outf("flights2.csv", ios::app);
+  outf << flightNum << ',' << origin << ',' << destination << ',';
+  plane->writePlane(outf);
+  outf.close();
+  delete plane;
+}  // operator
+
+
+void Flight::addFlight()
+{
+  cout << "\nFlight number to add: ";
+  cin >> flightNum;
+  cin.ignore(TEN, '\n');
+  cout << "Origin: ";
+  cin.getline(origin, MAX_CITY_LENGTH);
+  cout << "Destination: ";
+  cin.getline(destination, MAX_CITY_LENGTH);
+  plane = new Plane(flightNum);
+  plane->addFlight();
+}  // operator
+
+
+int Flight::getFlightNumber() const
+{
+  return flightNum;
+}  // getFlightNumber()
+
+
+const Flight& Flight::operator!() const
+{
+  !(*plane);
+  return *this;
+}  // operator
+
+
+const Flight& Flight::operator--() const
+{
+  (*plane)-- ;
+  return *this;
+}  // operator
+
+bool Flight::findPassenger(const char* passengerName) const
+{
+  bool found = false;
+  found = plane->findPassenger(passengerName);
+  return found;
+} // findPassenger
+// Author: Sean Davis
+
+#include "flights.h"
+#include "utilities.h"
+#include "passenger.h"
+#include <cstring>
+
+Flights::Flights() : size( 0 ), capacity(INITIAL_SIZE) 
+{
+  flights = new Flight*[capacity];
+} // Flights()
+
+
+ifstream& operator >> (ifstream& inf, Flights& flights)
+{
+  Flight *flight;
+  int numberOfFlights;
+  inf >> numberOfFlights;
+  
+  for(int i = 0; i < numberOfFlights; i++)
+  {
+    flight = new Flight;
+    inf >> *flight;
+    flights += flight;
+  }  // for each flight
+
+  return inf;
+} // operator
+
+
+
+Flights::~Flights() 
+{
+  ofstream outf ("flights2.csv");
+  outf << size << endl;
+  outf.close();
+  outf.open("passengers3.dat", ios::trunc | ios::out);
+  outf.close();
+  
+  for(int i = 0; i < size; i++)
+    delete flights[i];
+  
+  delete [] flights;
+} // ~Flights()
+
+
+Flights& Flights::operator++()
+{
+  int i;
+  cout << "Existing Flights:\n\n";
+  cout << "Flt# Origin               Destination\n";
+
+  for(i = 0; i < size; i++)
+    cout << (*flights[i]);
+
+  Flight *flight = new Flight();
+  flight->addFlight();
+  *this += flight;
+  return *this;
+}  // addFlight()
+
+
+void Flights::addPassenger() const
+{
+  int i, flightNumber;
+  
+  cout << "Flt# Origin               Destination\n";
+
+  for(i = 0; i < size; i++)
+    cout << (*flights[i]);
+
+  do
+  {
+    cout << "\nFlight number (0 = exit): ";
+    flightNumber = getNumber();
+
+    if(flightNumber > 0)
+    {
+      
+      for(i = 0; i < size; i++)
+        if(flights[i]->getFlightNumber() == flightNumber)
+        {
+          (*flights[i])++ ;
+          break;
+        }  // if found match of flight
+
+      if(i == size)
+      {
+        cout << "We do not have a flight number " << flightNumber << ".\n";
+        cout << "Please try again.\n";
+      }  // if flightNumber not found
+    }  // if flightNumber > 0
+    else // if flightNumer <= 0
+      if(flightNumber == ERROR)
+        cout << "That is an invalid flight number.\nPlease try again.\n"; 
+  } while((flightNumber != 0 && i == size) || flightNumber == ERROR);
+}  // addPassenger()
+
+
+Flights& Flights::operator+=(Flight* flight)
+{
+  int i;
+   
+  if(capacity == size)
+  {
+    Flight **temp = flights;
+    capacity *= RESIZE_MULTIPLIER;
+    flights = new Flight*[capacity];
+     
+    for(i = 0; i < size; i++)
+      flights[i] = temp[i];
+     
+    delete [] temp;
+  } // if size == capacity
+   
+  for(i = size - 1; 
+    i >= 0 && flights[i]->getFlightNumber() > flight->getFlightNumber(); i--)
+    flights[i + 1] = flights[i];
+   
+  flights[i + 1] = flight;
+  size++;
+
+  return *this;
+}  // operator
+
+ 
+int Flights::getSize() const
+{
+  return size;
+}  // size()
+
+
+Flights& Flights::operator--(int)
+{
+  int i, flightNumber;
+  cout << "Existing Flights:\n\n";
+  cout << "Flt# Origin               Destination\n";
+
+  for(i = 0; i < size; i++)
+    cout << (*flights[i]);
+
+  cout << "\nFlight number to remove: ";
+  cin >> flightNumber;
+  cin.ignore(TEN, '\n');
+  
+  for(i = 0; i < size; i++)
+    if(flights[i]->getFlightNumber() == flightNumber)
+    {
+      !(*flights[i]);
+      delete flights[i];
+      
+      for(; i < size - 1; i++)
+        flights[i] = flights[i + 1];
+      
+      size--;
+      break;
+    }  // if found match of flight
+
+  return *this;
+}  // operator
+
+
+void Flights::removePassenger() const
+{
+  int i, flightNumber;
+  cout << "Existing Flights:\n\n";
+  cout << "Flt# Origin               Destination\n";
+
+  for(i = 0; i < size; i++)
+    cout << (*flights[i]);
+
+  cout << "\nFlight number of passenger remove: ";
+  cin >> flightNumber;
+  cin.ignore(TEN, '\n');
+  
+  for(i = 0; i < size; i++)
+    if(flights[i]->getFlightNumber() == flightNumber)
+    {
+      --(*flights[i]);
+      break;
+    }  // if found match of flight
+}  // removePassenger()
+
+
+void Flights::findPassenger() const
+{
+  bool found = false;
+  char passengerName[Passenger::NAME_LENGTH];
+  cout << "\nName of passenger: ";
+  cin.getline(passengerName, Passenger::NAME_LENGTH);
+  //strtok(passengerName, "\n\r");
+
+  for (int i = 0; i < size; i++)
+    if(flights[i]->findPassenger(passengerName))
+      found = true;
+  
+  if (!found)
+    cout << passengerName << " not found." << endl;
+
+} // findPassneger()
+// author: Steven Li
+
+#include <iostream>
+#include <fstream>
+
+#include "linkedlist.h"
+
+using namespace std;
+
+void LinkedList::initialize(int seatNum)
+{
+  for (int i = 0; i < seatNum; i++)
+    head = new ListNode(EMPTY, head);
+} // initialize linked list to EMPTY
+
+
+LinkedList::~LinkedList()
+{
+  for(ListNode* ptr = head; ptr; ptr = head)
+  {
+    head = ptr->next;
+    delete ptr;
+  } // for loop
+} // delete linked list
+
+//int LinkedList::operator[](int seatNum) const
+//{
+//  ListNode* ptr = head;
+
+//  for(int i = 0; i < seatNum; i++)
+//    ptr = ptr->next;
+
+//  return ptr->offset;
+//} // const bracket operator
+
+int& LinkedList::operator[](int seatNum) const
+{
+  ListNode* ptr = head;
+
+  for(int i = 0; i < seatNum; i++)
+  	ptr = ptr->next;
+
+  return ptr->offset;
+} // non const bracket operator
+
+ostream& operator << (ostream& os, const LinkedList& list)
+{
+  for(ListNode* ptr = list.head; ptr; ptr = ptr->next)
+  {
+    if(ptr->offset != LinkedList::EMPTY)
+        cout << 'X';
+    else  // empty seat
+        cout << '-';
+  } // for loop
+
+  return os;
+} // operator
+// Author: Sean Davis 
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include "passenger.h"
+#include "flight.h"
+#include "flights.h"
+#include "utilities.h"
+
+using namespace std;
+
+enum 
+{
+  DONE, ADD_PASSENGER, REMOVE_PASSENGER, ADD_FLIGHT, 
+  REMOVE_FLIGHT, FIND_PASSENGER
+}; // enum
+
+const int MAX_CHOICE = FIND_PASSENGER;
+
+int getChoice()
+{ 
+  int choice;
+  cout << "\nECS Flight Reservation Menu\n";
+  cout << DONE << ". Exit.\n";
+  cout << ADD_PASSENGER << ". Add Passenger.\n";
+  cout << REMOVE_PASSENGER << ". Remove Passenger.\n";
+  cout << ADD_FLIGHT << ". Add Flight.\n";
+  cout << REMOVE_FLIGHT << ". Remove Flight.\n";
+  cout << FIND_PASSENGER << ". Find Passenger.\n";
+  
+  do
+  {
+    cout << "\nPlease enter your choice: ";
+    choice = getNumber();
+    
+    if(choice == ERROR)
+    {
+      cout << "Your choice is invalid.\n";
+      cout << "Please try again.\n";
+    }  // if invalid format
+    else // choice is a valid number
+      if(choice < DONE || choice > MAX_CHOICE)
+      {
+        cout << choice << " is not an available choice.\n";
+        cout << "Please try again.\n";
+      }  // if choice out of range.
+  } while(choice < DONE || choice > MAX_CHOICE  || choice == ERROR);
+  
+  if(choice == DONE)
+    cout << "Goodbye.\n";
+  
+  return choice;
+} // getChoice()
+
+
+int main(int argc, char** argv)
+{
+  int choice;
+  Flights flights;
+  Passenger::copyPassengers();
+  ifstream inf  ("flights.csv");
+  inf >> flights;
+  inf.close();
+  
+  while((choice = getChoice()) != DONE)
+    switch(choice)
+    {
+      case ADD_PASSENGER : flights.addPassenger(); break;
+      case REMOVE_PASSENGER : flights.removePassenger(); break;
+      case ADD_FLIGHT : ++flights; break;
+      case REMOVE_FLIGHT : flights--; break;
+      case FIND_PASSENGER: flights.findPassenger(); break;
+    }  // switch
+
+  return 0;
+} // main())
+
+// Author: Sean Davis
+#include <cstring>
+#include <ostream>
+#include <fstream>
+#include "passenger.h"
+
+using namespace std;
+
+
+Passenger::Passenger() 
+{
+} // Passenger()
+
+
+Passenger::Passenger(short flightNu, short ro, char sea, const char nam[]) : 
+  flightNum(flightNu), row(ro), seat(sea)
+{
+  strcpy(name, nam);
+}  // Passenger()
+
+
+void Passenger::copyPassengers()
+{
+  Passenger passenger;
+
+  ifstream inf("passengers.dat", ios::binary);
+  ofstream outf("passengers2.dat", ios::binary);
+
+  while(inf.read( (char*) &passenger, sizeof(Passenger)))
+    outf.write((char*) &passenger, sizeof(Passenger));
+
+  outf.close();
+  inf.close();
+}  // copyPassengers()
+
+
+bool Passenger::operator==(int flightNumber) const
+{
+  return flightNum == flightNumber;
+} // takes int as its parameter, and returns true or false
+
+
+bool Passenger::operator==(const char* passengerName) const
+{
+  return !strcmp(name, passengerName);
+} // takes a const char pointer as paramters, and returns ture or false
+
+
+void Passenger::operator!()
+{
+  flightNum = CANCELLED;
+} // sets flightNum to Passengers::CANCELLED
+
+
+ostream& operator << (ostream& os, const Passenger& passen)
+{
+  os << passen.name << endl;
+  return os;
+} // prints the name of the passenger
+
+// Author: Sean Davis
+
+#include <cstring>
+#include <cctype>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include "plane.h"
+#include "utilities.h"
+#include "passenger.h"
+#include "linkedlist.h"
+
+using namespace std;
+
+
+int Plane::getRow() const
+{
+  int row;
+  
+  do
+  {
+    cout << "\nPlease enter the row of the seat you wish to reserve: ";
+    row = getNumber();
+
+    if(row == ERROR)
+      cout << "That is an invalid row number.\nPlease try again.\n";
+    else  // valid row number
+      if(row < 1 || row > rows)
+        cout << "There is no row #" << row 
+          << " on this flight.\nPlease try again.\n"; 
+          
+  }  while(row < 1 || row > rows);
+  
+  return row;
+} // getRow()
+
+
+void Plane::showGrid() const
+{
+  int row, seatNum = 0;
+  
+  cout << "ROW# ";
+  
+  for(seatNum = 0; seatNum < width; seatNum++)
+    cout << char(seatNum + FIRST_SEAT);
+  
+  cout << endl;
+  
+  for(row = 0; row < rows; row++)
+  {
+    cout << right << setw(ROW_SPACE) << row + 1 << "   ";
+    cout << passengers[row] << endl;
+  }  // for each row
+  
+  cout << "\nX = reserved.\n";
+}  // showGrid()
+
+
+ostream& operator << (ostream& os, const Plane& plane)
+{
+  Passenger passenger;
+  ifstream inf("passengers2.dat", ios::binary);
+  
+  for(int row = 0; row < plane.rows; row++)
+    for(int seatNum = 0; seatNum < plane.width; seatNum++)
+      if(plane.passengers[row][seatNum] != Plane::NONE)
+      { 
+        inf.seekg(plane.passengers[row][seatNum], ios::beg);
+        inf.read((char*) &passenger, sizeof(Passenger));
+        os << passenger;
+      }  // if not NONE
+
+   inf.close();
+   return os;
+}  // operator show 
+
+
+ifstream& operator >> (ifstream& inf, Plane& plane)
+{
+  int row;
+  char comma;
+  Passenger passenger;
+  inf >> plane.rows >> comma >> plane.width;
+  plane.passengers = new LinkedList[plane.rows];
+  
+  for(row = 0; row < plane.rows; row++)
+    plane.passengers[row].initialize(plane.width);
+  
+  ifstream inf2("passengers.dat", ios::binary);
+
+  while(inf2.read((char*) &passenger, sizeof(Passenger)))
+  { 
+    if(passenger == plane.flightNumber)
+    {
+      plane.passengers
+        [passenger.row - Plane::FIRST_ROW]
+        [passenger.seat - Plane::FIRST_SEAT] 
+        = (int) inf2.tellg() - sizeof(Passenger);
+      plane.reserved++;
+    }  // if the passenger is on this flight
+  }  // while more in file
+  
+  inf2.close();
+  return inf;
+} //operator
+
+
+Plane::~Plane()
+{
+  delete [] passengers;
+}  // ~Plane()
+
+
+void Plane::addFlight()
+{
+  cout << "Rows: ";
+  cin >> rows;
+  cout << "Width: ";
+  cin >> width;
+  cin.ignore(TEN, '\n');  
+  passengers = new LinkedList [rows];
+  
+  for(int row = 0; row < rows; row++)
+    passengers[row].initialize(width);
+
+}  // addFlight()
+
+
+Plane& Plane::operator++()
+{
+  int row, seatNum;
+  char name[Passenger::NAME_LENGTH], seat;
+  
+  if(reserved == rows * width)
+  {
+    cout << "We are sorry but Flight #" << flightNumber << " is full.\n";
+    return *this;  // false
+  } // false
+
+  cout << "Please enter the name of the passenger: ";
+  cin.getline(name, Passenger::NAME_LENGTH); showGrid();
+  
+  while(true)
+  {
+    row = getRow();
+    cout << "Please enter the seat letter you wish to reserve: ";
+    seat = cin.get();
+    seatNum = seat - FIRST_SEAT;
+
+    while(cin.get() != '\n');
+
+    if(passengers[row - FIRST_ROW][seatNum] == NONE) break;
+
+    printf("That seat is already occupied.\nPlease try again.\n");
+  } // while occupied seat
+  
+  ofstream outf("passengers2.dat", ios::binary | ios::app);
+  passengers[row - FIRST_ROW][seatNum] = outf.tellp();
+  Passenger passenger(flightNumber, row, seat, name);
+  outf.write((char*) &passenger, sizeof(Passenger));
+  reserved++; return *this;
+}  // operator add
+
+
+Plane& Plane::operator--(int)
+{
+  char name[Passenger::NAME_LENGTH];
+  Passenger passenger;
+  cout << "Passengers on Flight #" << flightNumber << endl;
+  cout << *this;
+  fstream inOutf("passengers2.dat", ios::binary | ios::in | ios::out);
+  cout << "\nName of passenger to remove: ";
+  cin.getline(name, Passenger::NAME_LENGTH);
+  bool found = false;
+  
+  for(int row = 0; !found && row < rows; row++)
+    for(int seatNum = 0; !found && seatNum < width; seatNum++)
+      if(passengers[row][seatNum] != NONE)
+      {
+        inOutf.seekg(passengers[row][seatNum], ios::beg);
+        inOutf.read((char*) &passenger, sizeof(Passenger));
+        
+        if(passenger == name)
+        {
+          !passenger;
+          inOutf.seekp(passengers[row][seatNum], ios::beg);
+          inOutf.write((char*) &passenger, sizeof(Passenger));
+          passengers[row][seatNum] = NONE;
+          found = true;
+        }  // if found name
+      }  // if seat not NONE
+  
+  inOutf.close();
+  reserved--; return *this;
+}  // operator remove
+
+
+const Plane& Plane::operator!() const
+{
+  Passenger passenger;
+  fstream inOutf("passengers2.dat", ios::binary | ios::in | ios::out);
+
+  for(int row = 0; row < rows; row++)
+    for(int seatNum = 0; seatNum < width; seatNum++)
+    {
+      if(passengers[row][seatNum] != NONE)
+      {
+        inOutf.seekg(passengers[row][seatNum], ios::beg);
+        inOutf.read((char*) &passenger, sizeof(Passenger));
+        !passenger;
+        inOutf.seekp(passengers[row][seatNum], ios::beg);
+        inOutf.write((char*) &passenger, sizeof(Passenger));
+      }  // if seat not NONE
+    } // for loop
+
+  return *this;
+}  // operator remove
+
+
+void Plane::writePlane(ofstream &outf) const
+{
+  int row, seatNum;
+  Passenger passenger;
+  outf << rows << ',' << width << endl;
+  
+  ifstream inf("passengers2.dat", ios::binary);
+  ofstream outf2("passengers3.dat", ios::binary | ios::app);
+
+  for(row = 0; row < rows; row++)
+    for(seatNum = 0; seatNum < width; seatNum++)
+      if(passengers[row][seatNum] != NONE)
+      {
+        inf.seekg(passengers[row][seatNum], ios::beg);
+        inf.read((char*) &passenger, sizeof(Passenger));
+        outf2.write((char*) &passenger, sizeof(Passenger));
+      }  // if seat not NONE
+}  // writePlane()
+
+
+bool Plane::findPassenger(const char* passengerName) const
+{
+  bool found = false;
+  Passenger passenger;
+  ifstream inf("passengers2.dat", ios::binary);
+
+  for(int i = 0; !found && i < rows; i++)
+    for(int j = 0; !found && j < width; j++)
+      if(passengers[i][j] != NONE)
+      {
+        inf.seekg(passengers[i][j]);
+        inf.read((char*) &passenger, sizeof(Passenger));
+        
+        if(passenger == passengerName)
+        {
+          cout << "Flight #" << flightNumber 
+               << " Row: " << i + FIRST_ROW 
+               << " Seat: " << (char)(j + FIRST_SEAT) << endl;
+          found = true;
+        }  // if found name
+      }  // if seat not NONE
+
+  inf.close();
+  return found;
+} // findPassenger
+// Author: Sean Davis
+
+#include <iostream>
+#include <cctype>
+#include <climits>
+#include "utilities.h"
+
+using namespace std;
+
+const int TEN = 10;
+const int ASCII_ZERO = '0';
+
+int getNumber()
+{
+  long long number = 0, OK = 1;
+  char c;
+
+  for(c = cin.get(); isspace(c) && c != '\n'; c = cin.get());
+
+  if(isdigit(c))
+  {
+    do
+    {
+      number = number * TEN + c - ASCII_ZERO;
+      c = cin.get();
+    }  while(isdigit(c) && number <= INT_MAX);
+
+    while(c != '\n' && isspace(c))
+      c = cin.get();
+
+    if(c != '\n' || number > INT_MAX)
+      OK = 0;
+  }  // if first non-space is a digit
+  else // first non-space is not a digit
+    OK = 0;  // false
+
+  while(c != '\n')
+    c = cin.get();
+    
+  if(OK)
+    return number;
+  else  // invalid number
+    return ERROR;
+  
+} // getNumber()
+
+#ifndef FLIGHT_H
+#define	FLIGHT_H
+
+#include <iostream>
+#include <fstream>
+#include "plane.h"
+
+using namespace std;
+
+class Flight
+{
+  static const int MAX_CITY_LENGTH = 20;
+  static const int TEN = 10;
+  static const int FLIGHT_NUM_SPACE = 4;
+  int flightNum;
+  char origin[MAX_CITY_LENGTH];
+  char destination[MAX_CITY_LENGTH];
+  Plane *plane;
+  friend ifstream& operator >> (ifstream& inf, Flight& flight);
+  friend ostream& operator << (ostream& os, const Flight& flight);
+public:
+  const Flight& operator++(int) const;
+  ~Flight();
+  void addFlight();
+  int getFlightNumber() const;
+  const Flight& operator!() const;
+  const Flight& operator--() const;
+  bool findPassenger(const char* passengerName) const;
+} ;  // class Flight
+
+#endif	// FLIGHT_H
+
+#ifndef FLIGHTS_H
+#define	FLIGHTS_H
+
+#include "flight.h"
+
+class Flights 
+{
+  static const int INITIAL_SIZE = 2;
+  static const int RESIZE_MULTIPLIER = 2;
+  static const int TEN = 10;
+  Flight **flights;
+  int size;
+  int capacity;
+  friend ifstream& operator >> (ifstream& inf, Flights& flights);
+public:
+  Flights();
+  ~Flights();
+  void addPassenger() const;
+  Flights& operator++();
+  Flights& operator+=(Flight* flight);
+  int getSize() const;
+  Flights& operator--(int); 
+  void removePassenger() const;
+  void findPassenger() const;
+}; // class flights 
+
+#endif	// FLIGHTS_H
+
+#ifndef LINKED_LIST
+#define LINKED_LIST
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+
+using namespace std;
+
+class LinkedList; // predecaleration
+
+class ListNode
+{
+  int offset;
+  ListNode* next;
+  ListNode(int offse, ListNode* nex):offset(offse), next(nex){};
+  friend class LinkedList;
+  friend ostream& operator << (ostream& os, const LinkedList& list);
+}; // ListNode
+
+class LinkedList
+{
+  static const int EMPTY = -1;
+  ListNode* head;
+  friend ostream& operator << (ostream& os, const LinkedList& list);
+public:
+  LinkedList():head(NULL){};
+  void initialize(int seatNum);
+  ~LinkedList();
+  //int operator[](int seatNum) const;
+  int& operator[](int seatNum) const;
+}; // LinkedList
+
+#endif	// LINKED_LIST
+#ifndef PASSENGER_H
+#define	PASSENGER_H
+
+#include <iostream>
+#include <fstream>
+#include "plane.h"
+
+class Passenger 
+{
+public:
+  static const int NAME_LENGTH = 30;
+  static const int CANCELLED = -1;
+private:
+  short flightNum;
+  short row; 
+  char seat;
+  char name[NAME_LENGTH];
+  friend ifstream& operator >> (ifstream& inf, Plane& plane);
+  friend ostream& operator << (ostream& os, const Passenger& passen);
+public:
+  Passenger();
+  Passenger(short flightNu, short ro, char sea, const char nam[]);
+  static void copyPassengers();
+  bool operator==(int flightNumber) const; 
+  bool operator==(const char* passengerName) const;
+  void operator!();
+}; // class passengers 
+
+#endif	// PASSENGERS_H
+#ifndef PLANE_H
+#define	PLANE_H
+#include <fstream>
+
+#include "linkedlist.h"
+using namespace std;
+
+
+class Plane
+{
+  static const int NONE = -1;
+  static const int FIRST_ROW = 1;
+  static const int FIRST_SEAT = 'A';
+  static const int TEN = 10;
+  static const int ROW_SPACE = 2;
+  static const int INIT_RE = 0;
+  int flightNumber;
+  int rows;
+  int width;
+  int reserved;
+  LinkedList* passengers;
+  int getRow() const;
+  void showGrid() const;
+  void showPassengers() const;
+  friend ostream& operator << (ostream& os, const Plane& plane);
+  friend ifstream& operator >> (ifstream& inf, Plane& plane);
+public:
+  Plane(int flightNum):flightNumber(flightNum), reserved(INIT_RE){};
+  ~Plane();
+  void addFlight();
+  Plane& operator++();
+  Plane& operator--(int);
+  const Plane& operator!() const;
+  void writePlane(ofstream &outf) const;
+  bool findPassenger(const char* passengerName) const;
+}; // class Plane
+
+#endif	// PLANE_H
+
+
+#ifndef UTIL_H
+#define	UTIL_H
+
+const int ERROR = -1;
+int getNumber();
+
+#endif	// UTIL_H
+
+
+#include "container.h"
+
+Container::Container(int siz):size(siz)
+{
+}; // con
+
+
+Container::~Container()
+{
+}; // de
+
+
+int Container::getSize() const
+{
+  return size;
+} // getSize()
+
+#include "linkedlist.h"
+
+using namespace std;
+
+LinkedList::~LinkedList()
+{
+  for(ListNode* ptr = head; ptr; ptr = head)
+  {
+    head = ptr->next;
+    delete ptr;
+  } // for loop
+} // delete linked list
+
+
+int* LinkedList::insert(int num)
+{
+  curr = new ListNode(num, tail, NULL);
+  
+  if(!size)
+    head = curr;
+  else // size is not zero
+    tail->next = curr;
+  
+  tail = curr;
+  size++;
+  return &(curr->data);
+} // insert()
+
+
+int* LinkedList::erase(int num)
+{
+  ListNode* ptr, *prev = NULL;
+  
+  for(ptr = head; ptr && (ptr->data < num || num < ptr->data); ptr = ptr->next)
+    prev = ptr;
+  
+  if(ptr && !(ptr->data < num || num < ptr->data))
+  {
+    curr = ptr->next;
+    delete ptr;
+    size--;
+    
+    if(!prev)
+      head = curr;
+    else // prev is not null
+      prev->next = curr;
+    
+    curr->previous = prev;
+    return &(curr->data);
+  } // if found
+  else // if not found
+    return NULL;
+} // erase()
+
+
+int* LinkedList::find(int num)
+{
+  //ListNode *ptr;
+
+  for(curr = head; curr && (curr->data < num || num < curr->data);
+     curr = curr->next) cout << curr->data << " ";
+  
+  if(curr && !(curr->data < num || num < curr->data))
+    return &(curr->data); // if found
+  else // if not found
+    return NULL;
+} // find()
+
+
+int* LinkedList::operator++()
+{
+  if(curr) // if curr is not NULL
+    curr = curr->next;
+  
+  if(curr) // if updated curr or curr is not NULL
+    return &(curr->data);
+  else // if curr is NUll
+    return NULL;
+} // operator pre increment
+
+
+int* LinkedList::operator--()
+{
+  if(curr) // if curr is not NULL
+    curr = curr->previous;
+  
+  if(curr) // if updated curr or curr is not NULL
+    return &(curr->data);
+  else // if curr is NUll
+    return NULL;
+} // operator pre decrement
+
+// Author: Sean Davis 
+
+#include <iostream>
+#include <fstream>
+#include "container.h"
+#include "vector.h"                         // uncomment for Vector
+#include "sortedvector.h"                  //  uncomment for SortedVector
+#include "linkedlist.h"                     // uncomment for LinkedList
+#include "sortedlinkedlist.h"               // uncomment for SortedLinkedList
+
+using namespace std;
+
+int main(int argc, char** argv) 
+{
+  char operation;
+  int num, *intPtr, containerNum, index;
+  Container *containers[4] = {NULL, NULL, NULL, NULL};
+
+ SortedVector *vectors[2];                       // uncomment for SortedVector
+ containers[0] = vectors[0] = new SortedVector;  // uncomment for SortedVector
+// Vector *vectorPtr = new Vector;                 // uncomment for Vector
+// containers[1] = vectors[1] = vectorPtr;         // uncomment for Vector
+// LinkedList *lists[2];                            // uncomment for LinkedList
+// containers[2] = lists[0] = new LinkedList;       // uncomment for LinkedList
+// containers[3] = lists[1] = new SortedLinkedList; //uncomment SortedLinkedList
+  
+  ifstream inf(argv[1]);
+  
+  while(inf >> containerNum >> operation)
+  {  
+    switch(operation)
+    {
+      case 'C' :   // uncomment for SortedVector 
+        cout << "Capacity: " << vectors[containerNum]->getCapacity() << endl; 
+        break;
+                  // uncomment for SortedVector
+      case 'E' : 
+        inf >> num;
+        intPtr = containers[containerNum]->erase(num); 
+        cout << "Erase " << num << " : ";
+
+        if(intPtr)
+          cout << *intPtr << endl;
+        else // nothing after num
+          cout << "NULL\n";
+
+        break;
+      case 'F' :
+        inf >> num;
+        cout << "Find " << num << " : ";  
+        intPtr = containers[containerNum]->find(num); 
+
+        if(intPtr)
+          cout << *intPtr << endl;
+        else // not found
+          cout << "NULL\n";
+
+        break; 
+      case 'I' : 
+        inf >> num; 
+        intPtr = containers[containerNum]->insert(num); 
+        cout << "Insert " << num << " : " << *intPtr << endl;
+        break;
+      case 'S' :
+        cout << "Size: " << containers[containerNum]->getSize() << endl;
+        break; 
+      case 'R' :                       
+        inf >> index;
+        num = (*vectors[containerNum])[index]; // uncomment for 2.12
+        cout << "Read [" << index << "] : " << num << endl;
+        break;
+      case 'W' : 
+        inf >> index >> num;
+        cout << "Write [" << index << "] = " << num << endl;
+//      (*vectorPtr)[index] = num;  // uncomment for Vector
+        break;
+/*    case 'M' : 
+        intPtr = --(*lists[containerNum - 2]); 
+        cout << "-- : ";
+        
+        if(intPtr)
+          cout << *intPtr << endl;
+        else  // moved beyound front of container
+          cout << "NULL\n";
+        
+        break;
+      case 'P' :
+        intPtr = ++(*lists[containerNum - 2]) ; 
+        cout << "++ : ";
+        
+        if(intPtr)
+          cout << *intPtr << endl;
+        else  // moved beyond end of container
+          cout << "NULL\n";
+        
+        break;
+*/  // uncomment for LinkedList
+    }  // switch
+  }  // while more in file
+    
+  for(int i = 0; i < 4; i++)
+    if(containers[i])
+      delete containers[i];
+
+  return 0;
+} // main())
+
+// Author: Sean Davis 
+
+#include <iostream>
+#include <fstream>
+#include "container.h"
+#include "vector.h"                        //  uncomment for Vector
+#include "sortedvector.h"                   // uncomment for SortedVector
+//#include "linkedlist.h"                     // uncomment for LinkedList
+//#include "sortedlinkedlist.h"               // uncomment for SortedLinkedList
+
+using namespace std;
+
+int main(int argc, char** argv) 
+{
+  char operation;
+  int num, *intPtr, containerNum, index;
+  Container *containers[4] = {NULL, NULL, NULL, NULL};
+
+ SortedVector *vectors[2];                       // uncomment for SortedVector
+// containers[0] = vectors[0] = new SortedVector;  // uncomment for SortedVector
+ Vector *vectorPtr = new Vector;                 // uncomment for Vector
+ containers[1] = vectors[1] = vectorPtr;         // uncomment for Vector
+// LinkedList *lists[2];                            // uncomment for LinkedList
+// containers[2] = lists[0] = new LinkedList;       // uncomment for LinkedList
+// containers[3] = lists[1] = new SortedLinkedList; //uncomment SortedLinkedList
+  
+  ifstream inf(argv[1]);
+  
+  while(inf >> containerNum >> operation)
+  {  
+    switch(operation)
+    {
+      case 'C' :   // uncomment for SortedVector 
+        cout << "Capacity: " << vectors[containerNum]->getCapacity() << endl; 
+        break;
+                  // uncomment for SortedVector
+      case 'E' : 
+        inf >> num;
+        intPtr = containers[containerNum]->erase(num); 
+        cout << "Erase " << num << " : ";
+
+        if(intPtr)
+          cout << *intPtr << endl;
+        else // nothing after num
+          cout << "NULL\n";
+
+        break;
+      case 'F' :
+        inf >> num;
+        cout << "Find " << num << " : ";  
+        intPtr = containers[containerNum]->find(num); 
+
+        if(intPtr)
+          cout << *intPtr << endl;
+        else // not found
+          cout << "NULL\n";
+
+        break; 
+      case 'I' : 
+        inf >> num; 
+        intPtr = containers[containerNum]->insert(num); 
+        cout << "Insert " << num << " : " << *intPtr << endl;
+        break;
+      case 'S' :
+        cout << "Size: " << containers[containerNum]->getSize() << endl;
+        break; 
+      case 'R' :                       
+        inf >> index;
+        num = (*vectors[containerNum])[index]; // uncomment for 2.12
+        cout << "Read [" << index << "] : " << num << endl;
+        break;
+      case 'W' : 
+        inf >> index >> num;
+        cout << "Write [" << index << "] = " << num << endl;
+        (*vectorPtr)[index] = num;  // uncomment for Vector
+        break;
+/*    case 'M' : 
+        intPtr = --(*lists[containerNum - 2]); 
+        cout << "-- : ";
+        
+        if(intPtr)
+          cout << *intPtr << endl;
+        else  // moved beyound front of container
+          cout << "NULL\n";
+        
+        break;
+      case 'P' :
+        intPtr = ++(*lists[containerNum - 2]) ; 
+        cout << "++ : ";
+        
+        if(intPtr)
+          cout << *intPtr << endl;
+        else  // moved beyond end of container
+          cout << "NULL\n";
+        
+        break;
+*/  // uncomment for LinkedList
+    }  // switch
+  }  // while more in file
+    
+  for(int i = 0; i < 4; i++)
+    if(containers[i])
+      delete containers[i];
+
+  return 0;
+} // main())
+
+// Author: Sean Davis 
+
+#include <iostream>
+#include <fstream>
+#include "container.h"
+//#include "vector.h"                         // uncomment for Vector
+//#include "sortedvector.h"                   // uncomment for SortedVector
+#include "linkedlist.h"                     // uncomment for LinkedList
+//#include "sortedlinkedlist.h"               // uncomment for SortedLinkedList
+
+using namespace std;
+
+int main(int argc, char** argv) 
+{
+  char operation;
+  int num, *intPtr, containerNum, index;
+  Container *containers[4] = {NULL, NULL, NULL, NULL};
+
+// SortedVector *vectors[2];                       // uncomment for SortedVector
+// containers[0] = vectors[0] = new SortedVector;  // uncomment for SortedVector
+// Vector *vectorPtr = new Vector;                 // uncomment for Vector
+// containers[1] = vectors[1] = vectorPtr;         // uncomment for Vector
+   LinkedList *lists[2];                           //  uncomment for LinkedList
+   containers[2] = lists[0] = new LinkedList;      //  uncomment for LinkedList
+// containers[3] = lists[1] = new SortedLinkedList; //uncomment SortedLinkedList
+  
+  ifstream inf(argv[1]);
+  
+  while(inf >> containerNum >> operation)
+  {  
+    switch(operation)
+    {
+/*      case 'C' :   // uncomment for SortedVector 
+        cout << "Capacity: " << vectors[containerNum]->getCapacity() << endl; 
+        break;
+*/                  // uncomment for SortedVector
+      case 'E' : 
+        inf >> num;
+        intPtr = containers[containerNum]->erase(num); 
+        cout << "Erase " << num << " : ";
+
+        if(intPtr)
+          cout << *intPtr << endl;
+        else // nothing after num
+          cout << "NULL\n";
+
+        break;
+      case 'F' :
+        inf >> num;
+        cout << "Find " << num << " : ";  
+        intPtr = containers[containerNum]->find(num); 
+
+        if(intPtr)
+          cout << *intPtr << endl;
+        else // not found
+          cout << "NULL\n";
+
+        break; 
+      case 'I' : 
+        inf >> num; 
+        intPtr = containers[containerNum]->insert(num); 
+        cout << "Insert " << num << " : " << *intPtr << endl;
+        break;
+      case 'S' :
+        cout << "Size: " << containers[containerNum]->getSize() << endl;
+        break; 
+      case 'R' :                       
+        inf >> index;
+//        num = (*vectors[containerNum])[index]; // uncomment for 2.12
+        cout << "Read [" << index << "] : " << num << endl;
+        break;
+      case 'W' : 
+        inf >> index >> num;
+        cout << "Write [" << index << "] = " << num << endl;
+//      (*vectorPtr)[index] = num;  // uncomment for Vector
+        break;
+    case 'M' : 
+        intPtr = --(*lists[containerNum - 2]); 
+        cout << "-- : ";
+        
+        if(intPtr)
+          cout << *intPtr << endl;
+        else  // moved beyound front of container
+          cout << "NULL\n";
+        
+        break;
+      case 'P' :
+        intPtr = ++(*lists[containerNum - 2]) ; 
+        cout << "++ : ";
+        
+        if(intPtr)
+          cout << *intPtr << endl;
+        else  // moved beyond end of container
+          cout << "NULL\n";
+        
+        break;
+    // uncomment for LinkedList
+    }  // switch
+  }  // while more in file
+    
+  for(int i = 0; i < 4; i++)
+    if(containers[i])
+      delete containers[i];
+
+  return 0;
+} // main())
+
+// Author: Sean Davis 
+
+#include <iostream>
+#include <fstream>
+#include "container.h"
+//#include "vector.h"                         // uncomment for Vector
+//#include "sortedvector.h"                   // uncomment for SortedVector
+#include "linkedlist.h"                     // uncomment for LinkedList
+#include "sortedlinkedlist.h"               // uncomment for SortedLinkedList
+
+using namespace std;
+
+int main(int argc, char** argv) 
+{
+  char operation;
+  int num, *intPtr, containerNum, index;
+  Container *containers[4] = {NULL, NULL, NULL, NULL};
+
+// SortedVector *vectors[2];                       // uncomment for SortedVector
+// containers[0] = vectors[0] = new SortedVector;  // uncomment for SortedVector
+// Vector *vectorPtr = new Vector;                 // uncomment for Vector
+// containers[1] = vectors[1] = vectorPtr;         // uncomment for Vector
+ LinkedList *lists[2];                            // uncomment for LinkedList
+// containers[2] = lists[0] = new LinkedList;       // uncomment for LinkedList
+ containers[3] = lists[1] = new SortedLinkedList; //uncomment SortedLinkedList
+  
+  ifstream inf(argv[1]);
+  
+  while(inf >> containerNum >> operation)
+  {  
+    switch(operation)
+    {
+/*      case 'C' :   // uncomment for SortedVector 
+        cout << "Capacity: " << vectors[containerNum]->getCapacity() << endl; 
+        break;
+*/                  // uncomment for SortedVector
+      case 'E' : 
+        inf >> num;
+        intPtr = containers[containerNum]->erase(num); 
+        cout << "Erase " << num << " : ";
+
+        if(intPtr)
+          cout << *intPtr << endl;
+        else // nothing after num
+          cout << "NULL\n";
+
+        break;
+      case 'F' :
+        inf >> num;
+        cout << "Find " << num << " : ";  
+        intPtr = containers[containerNum]->find(num); 
+
+        if(intPtr)
+          cout << *intPtr << endl;
+        else // not found
+          cout << "NULL\n";
+
+        break; 
+      case 'I' : 
+        inf >> num; 
+        intPtr = containers[containerNum]->insert(num); 
+        cout << "Insert " << num << " : " << *intPtr << endl;
+        break;
+      case 'S' :
+        cout << "Size: " << containers[containerNum]->getSize() << endl;
+        break; 
+      case 'R' :                       
+        inf >> index;
+//        num = (*vectors[containerNum])[index]; // uncomment for 2.12
+        cout << "Read [" << index << "] : " << num << endl;
+        break;
+      case 'W' : 
+        inf >> index >> num;
+        cout << "Write [" << index << "] = " << num << endl;
+//      (*vectorPtr)[index] = num;  // uncomment for Vector
+        break;
+      case 'M' : 
+        intPtr = --(*lists[containerNum - 2]); 
+        cout << "-- : ";
+        
+        if(intPtr)
+          cout << *intPtr << endl;
+        else  // moved beyound front of container
+          cout << "NULL\n";
+        
+        break;
+      case 'P' :
+        intPtr = ++(*lists[containerNum - 2]) ; 
+        cout << "++ : ";
+        
+        if(intPtr)
+          cout << *intPtr << endl;
+        else  // moved beyond end of container
+          cout << "NULL\n";
+        
+        break;
+  // uncomment for LinkedList
+    }  // switch
+  }  // while more in file
+    
+  for(int i = 0; i < 4; i++)
+    if(containers[i])
+      delete containers[i];
+
+  return 0;
+} // main())
+
+// Author: Sean Davis 
+
+#include <iostream>
+#include <fstream>
+#include "container.h"
+#include "vector.h"                         // uncomment for Vector
+#include "sortedvector.h"                   // uncomment for SortedVector
+#include "linkedlist.h"                     // uncomment for LinkedList
+#include "sortedlinkedlist.h"               // uncomment for SortedLinkedList
+
+using namespace std;
+
+int main(int argc, char** argv) 
+{
+  char operation;
+  int num, *intPtr, containerNum, index;
+  Container *containers[4] = {NULL, NULL, NULL, NULL};
+
+ SortedVector *vectors[2];                       // uncomment for SortedVector
+ containers[0] = vectors[0] = new SortedVector;  // uncomment for SortedVector
+ Vector *vectorPtr = new Vector;                 // uncomment for Vector
+ containers[1] = vectors[1] = vectorPtr;         // uncomment for Vector
+ LinkedList *lists[2];                            // uncomment for LinkedList
+ containers[2] = lists[0] = new LinkedList;       // uncomment for LinkedList
+ containers[3] = lists[1] = new SortedLinkedList; //uncomment SortedLinkedList
+  
+  ifstream inf(argv[1]);
+  
+  while(inf >> containerNum >> operation)
+  {  
+    switch(operation)
+    {
+      case 'C' :   // uncomment for SortedVector 
+        cout << "Capacity: " << vectors[containerNum]->getCapacity() << endl; 
+        break;
+                  // uncomment for SortedVector
+      case 'E' : 
+        inf >> num;
+        intPtr = containers[containerNum]->erase(num); 
+        cout << "Erase " << num << " : ";
+
+        if(intPtr)
+          cout << *intPtr << endl;
+        else // nothing after num
+          cout << "NULL\n";
+
+        break;
+      case 'F' :
+        inf >> num;
+        cout << "Find " << num << " : ";  
+        intPtr = containers[containerNum]->find(num); 
+
+        if(intPtr)
+          cout << *intPtr << endl;
+        else // not found
+          cout << "NULL\n";
+
+        break; 
+      case 'I' : 
+        inf >> num; 
+        intPtr = containers[containerNum]->insert(num); 
+        cout << "Insert " << num << " : " << *intPtr << endl;
+        break;
+      case 'S' :
+        cout << "Size: " << containers[containerNum]->getSize() << endl;
+        break; 
+      case 'R' :                       
+        inf >> index;
+        num = (*vectors[containerNum])[index]; // uncomment for SortedVector
+        cout << "Read [" << index << "] : " << num << endl;
+        break;
+      case 'W' : 
+        inf >> index >> num;
+        cout << "Write [" << index << "] = " << num << endl;
+      (*vectorPtr)[index] = num;  // uncomment for Vector
+        break;
+    case 'M' : 
+        intPtr = --(*lists[containerNum - 2]); 
+        cout << "-- : ";
+        
+        if(intPtr)
+          cout << *intPtr << endl;
+        else  // moved beyound front of container
+          cout << "NULL\n";
+        
+        break;
+      case 'P' :
+        intPtr = ++(*lists[containerNum - 2]) ; 
+        cout << "++ : ";
+        
+        if(intPtr)
+          cout << *intPtr << endl;
+        else  // moved beyond end of container
+          cout << "NULL\n";
+        
+        break;
+  // uncomment for LinkedList
+    }  // switch
+  }  // while more in file
+    
+  for(int i = 0; i < 4; i++)
+    if(containers[i])
+      delete containers[i];
+
+  return 0;
+} // main())
+
+
+#include "sortedlinkedlist.h"
+
+using namespace std;
+
+int* SortedLinkedList::insert(int num)
+{
+  ListNode *ptr, *prev = NULL;
+  
+  for(ptr = head; ptr && ptr->data < num; ptr = ptr->next)
+    prev = ptr;
+  
+  size++;
+  curr = new ListNode(num, prev, ptr);
+  
+  if(!prev) // insert at the front of the list
+    head = curr;
+  else // insert in the middle
+    prev->next = curr;
+  
+  if(ptr) // if next term is not null
+    ptr->previous = curr;
+  
+  return &(curr->data);
+} // insert()
+
+
+int* SortedLinkedList::erase(int num)
+{
+  ListNode* ptr, *prev = NULL;
+  
+  for(ptr = head; ptr && ptr->data < num; ptr = ptr->next)
+    prev = ptr;
+  
+  if(ptr && !(ptr->data < num || num < ptr->data))
+  {
+    curr = ptr->next;
+    delete ptr;
+    size--;
+    
+    if(!prev)
+      head = curr;
+    else // if prev is not null
+      prev->next = curr;
+    
+    curr->previous = prev;
+    return &(curr->data);
+  } // if found
+  else // if not found
+    return NULL;
+} // erase()
+
+
+int* SortedLinkedList::find(int num)
+{
+  //ListNode *ptr;
+
+  for(curr = head; curr && curr->data < num; curr = curr->next)
+    cout << curr->data << " ";
+  
+  if(curr && !(curr->data < num || num < curr->data))
+    return &(curr->data); // if found
+  else // if not found
+    return NULL;
+} // find()
+
+#include "sortedvector.h"
+
+int* SortedVector::insert(int num)
+{
+  if(!(size < capacity || capacity < size)) // if size equal to capacity
+    resize();
+  
+  int i, j;
+  
+  for(i = 0; i < size && array[i] < num; i++);
+  
+  if(i < size) // if it does not go to the end of the list
+    for(j = size; j > i; j--) array[j] = array[j - 1];
+  
+  array[i] = num;
+  size++;
+  return &array[i];
+} // insert()
+
+
+int* SortedVector::erase(int num)
+{
+  int i, j;
+  
+  for(i = 0; i < size && array[i] < num; i++);
+  
+  if(i < size && !(array[i] < num || num < array[i]))
+  {
+    size--;
+
+    for(j = i; j < size; j++) array[j] = array[j + 1];
+    
+    return &array[i];
+  } // if found 
+  else // not found
+    return NULL;
+} // erase()
+
+
+int* SortedVector::find(int num)
+{
+  int i;
+  
+  for(i = 0; i < size && array[i] < num; i++) cout << array[i] << " ";
+  
+  if(i < size && !(array[i] < num || num < array[i]))
+    return &array[i];
+  else // not found
+    return NULL;
+} // find()
+
+
+void SortedVector::resize()
+{
+  if (!capacity) // if capacity is originally zero
+    capacity = 1;
+  else  //if capcity is not originally zero
+    capacity *= TWO;
+  
+  int* temp = new int[capacity];
+  
+  for(int i = 0; i < size; i++) temp[i] = array[i];
+  
+  delete [] array;
+  
+  array = temp;
+} // resize()
+
+
+SortedVector::~SortedVector()
+{
+  delete [] array;
+} // ~SortedVector
+
+
+const int& SortedVector::operator[](int index) const
+{
+  if (size - 1 < index || index < 0)
+  {
+    cout << "Virtual seg fault." << endl;
+    return array[ZERO];
+  } // if out of range
+  
+  return array[index];
+} // operator
+
+
+int SortedVector::getCapacity() const
+{
+  return capacity;
+} // getCapacity
+
+
+#include "vector.h"
+
+
+#include "sortedvector.h"
+
+int* Vector::insert(int num)
+{
+  if (!(size < getCapacity() || getCapacity() < size)) 
+    resize();
+  
+  array[size] = num;
+  size++;
+  //for(int i = 0; i < size; i++) cout << i << " "<< array[i] << endl;
+  return &array[size - 1];
+} // insert()
+
+
+int* Vector::erase(int num)
+{
+  int i, j;
+  
+  for(i = 0; i < size && (array[i] < num || num < array[i]); i++);
+  
+  if(i < size)
+  {
+    size--;
+
+    for(j = i; j < size; j++) array[j] = array[j + 1];
+    
+    return &array[i];
+  } // if found
+  else // not found
+    return NULL;
+} // erase()
+
+
+int* Vector::find(int num)
+{
+  int i;
+  
+  for(i = 0; i < size && (array[i] < num || num < array[i]); i++) 
+    cout << array[i] << " ";
+  
+  if(i < size)
+    return &array[i];
+  else // not found
+    return NULL;
+} // find()
+
+
+int& Vector::operator[](int index) const
+{
+  if (size - 1 < index || index < 0)
+  {
+    cout << "Virtual seg fault." << endl;
+    return array[ZERO];
+  } // if out of range
+  
+  return array[index];
+} // opeator
+
+
+#ifndef CONTAINER_H
+#define CONTAINER_H
+
+#include <iostream>
+
+class Container
+{
+protected:
+  static const int ZERO = 0;
+  int size;
+public:
+  virtual int* insert(int num) = 0;
+  virtual int* erase(int num) = 0;
+  virtual int* find(int num) = 0;
+  Container(int siz);
+  int getSize() const;
+  virtual ~Container();
+}; // class container
+
+#endif // CONTAINER_H
+
+#ifndef LINKEDLIST_H
+#define LINKEDLIST_H
+
+#include <iostream>
+#include "container.h"
+
+class SortedLinkedList;
+class LinkedList;
+class ListNode
+{
+  int data;
+  ListNode* previous;
+  ListNode* next;
+  ListNode(int dat, ListNode* prev, ListNode* nex):
+  data(dat), previous(prev), next(nex){};
+  friend LinkedList;
+  friend SortedLinkedList;
+}; // ListNode()
+
+
+class LinkedList:public Container
+{
+protected:
+  ListNode* head;
+  ListNode* tail;
+  ListNode* curr;
+public:
+  LinkedList():Container(ZERO), head(NULL), tail(NULL), curr(NULL){};
+  ~LinkedList();
+  virtual int* insert(int num);
+  virtual int* erase(int num);
+  virtual int* find(int num);
+  int* operator++();
+  int* operator--();
+}; // LinkedList()
+
+#endif // LINKEDLIST_H
+
+#ifndef SORTEDLINKEDLIST_H
+#define SORTEDLINKEDLIST_H
+
+#include <iostream>
+#include "linkedlist.h"
+
+using namespace std;
+
+class SortedLinkedList:public LinkedList
+{
+public:
+  int* insert(int num);
+  int* erase(int num);
+  int* find(int num);
+}; // class SortedLinkedList
+
+#endif // SORTEDLINKEDLIST_H
+
+#ifndef SORTEDVECTOR_H
+#define SORTEDVECTOR_H
+
+#include <iostream>
+#include "container.h"
+
+using namespace std;
+
+class Container;
+
+class SortedVector:public Container
+{
+private:
+  int capacity;
+protected:
+  static const int TWO = 2;
+  int* array;
+  void resize();
+public:
+  int getCapacity() const;
+  SortedVector():Container(ZERO), capacity(ZERO), array(NULL){};
+  virtual int* insert(int num);
+  virtual int* erase(int num);
+  virtual int* find(int num);
+  ~SortedVector();
+  const int& operator[](int index) const;
+}; // class SortedVector
+
+#endif // SORTEDVECTOR_H
+
+#ifndef VECTOR_H
+#define VECTOR_H
+
+#include <iostream>
+#include "sortedvector.h"
+
+class Vector:public SortedVector
+{
+public:
+  int* insert(int num);
+  int* erase(int num);
+  int* find(int num);
+  int& operator[](int index) const;
+}; // class Vector
+
+#endif // VECTOR_H
+// Author: Sean Davis
+
+#include <string>
+#include <iostream>
+#include <fstream>
+
+#include "vector.h"
+using namespace std;
+const int ARRAY_SIZE = 200;
+
+void charsToInts(const char s[ARRAY_SIZE], int nums[ARRAY_SIZE])
+{
+  int i;
+  
+  for(i = 0; s[i] != '\0'; i++)
+    nums[i] = s[i] + 500;
+  
+  nums[i] = 0;  // adding sentinel terminator
+}  // charsToInts
+
+int main(int argc, char** argv)
+{
+  string str, str2;
+  char operation, s[ARRAY_SIZE];
+  int nums[ARRAY_SIZE], start, length, subStart, subLength;
+  string::iterator sitr;
+  string::reverse_iterator sRitr;
+  Vector<char>::iterator vcItr;
+  Vector<int>::iterator viItr;
+  Vector<char>::reverse_iterator vcRitr;
+  Vector<int>::reverse_iterator viRitr;
+  Vector<char> vectorC, vectorC2;
+  Vector<int> vectorI, vectorI2;
+  ifstream inf(argv[1]);
+  
+  while(inf >> operation)
+  {
+    switch(operation)
+    {
+      case 'A' :
+        cout << "\nAssignment operator:\n";
+        inf.getline(s, ARRAY_SIZE);
+        charsToInts(s, nums);
+        str = str2 = s;
+        str = str;
+        cout << str.size() << ' ' << str.capacity() << ' ' << str << endl;
+        vectorC = vectorC2 = s;
+        vectorC = vectorC;
+        cout << vectorC.size() << ' ' << vectorC.capacity() << ' ' << vectorC << endl;
+        vectorI =  vectorI2 = nums;
+        vectorI = vectorI;
+        cout << vectorI.size() << ' ' << vectorI.capacity() << ' ' << vectorI << endl;
+        break;
+      case '+' :
+        cout << "+= operator:\n";
+        inf.getline(s, ARRAY_SIZE);
+        charsToInts(s, nums);
+        str += s;
+        vectorC += s;
+        vectorI += nums;
+        cout << str.size() << ' ' << str.capacity() << ' ' << str << endl;
+        cout << vectorC.size() << ' ' << vectorC.capacity() << ' ' << vectorC << endl;
+        cout << vectorI.size() << ' ' << vectorI.capacity() << ' '  << vectorI << endl;
+        break;
+      case 'F' :
+        cout << "\nFind:\n";
+        inf.getline(s, ARRAY_SIZE);
+        charsToInts(s, nums);
+        cout << str.find(s) << endl;
+        cout << vectorC.find(s) << endl;
+        cout << vectorI.find(nums) << endl;
+        break;
+      case 'S' :
+        cout << "\nSubstring:\n";
+        inf >> start >> length;
+        str2 = str.substr(start, length);
+        vectorC2 = vectorC.substr(start, length);
+        vectorI2 =  vectorI.substr(start, length);
+        cout << str2 << endl;
+        cout << vectorC2 << endl;
+        cout << vectorI2 << endl;
+        break;
+      case 'I' :
+        cout << "\nInsert:\n";
+        inf >> start;
+        inf.getline(s, ARRAY_SIZE);
+        charsToInts(s, nums);
+        str.insert(start, s);
+        vectorC.insert(start, s);
+        vectorI.insert(start, nums);
+        cout  << str.size() << ' ' << str.capacity() << ' '  << str <<endl;
+        cout  << vectorC.size() << ' ' << vectorC.capacity() << ' ' <<  vectorC << endl;
+        cout  << vectorI.size() << ' ' << vectorI.capacity() << ' ' << vectorI << endl;
+        break;
+      case 'R' :
+        cout << "\nReplace:\n";
+        inf >> start >> length >> subStart >> subLength;
+        inf.getline(s, ARRAY_SIZE);
+        charsToInts(s, nums);
+        str.replace(start, length, s, subStart, subLength);
+        vectorC.replace(start, length, s, subStart, subLength);
+        vectorI.replace(start, length, nums, subStart, subLength);
+        cout << str.size() << ' ' << str.capacity() << ' ' << str << endl;
+        cout << vectorC.size() << ' ' << vectorC.capacity() << ' ' << vectorC << endl;
+        cout  << vectorI.size() << ' ' << vectorI.capacity() << ' ' << vectorI << endl;
+        break;
+      case 'L' :
+        cout << "\nForward iterator:\n";
+        for(sitr = str.begin(); sitr != str.end(); sitr++)
+          cout << *sitr;
+        
+        cout << endl;
+        
+        for( vcItr = vectorC.begin(); vcItr != vectorC.end(); vcItr++)
+          cout << *vcItr;
+        
+        cout << endl;
+        
+        for( viItr = vectorI.begin(); viItr != vectorI.end(); viItr++)
+          cout << *viItr;
+        
+        cout << endl;
+        
+        break;
+      case 'M' :
+        cout << "\nReverse iterator:\n";
+        for(sRitr = str.rbegin(); sRitr != str.rend(); sRitr++)
+          cout << *sRitr;
+        
+        cout << endl;
+        
+        for( vcRitr = vectorC.rbegin(); vcRitr != vectorC.rend(); vcRitr++)
+          cout << *vcRitr;
+        
+        cout << endl;
+        
+        for( viRitr = vectorI.rbegin(); viRitr != vectorI.rend(); viRitr++)
+          cout << *viRitr;
+        
+        cout << endl;
+        break;
+    } // switch
+  }  // while more in file
+  return 0;
+} // main()
+
+// Author: Steven Li
+
+#include "vector.h"
+
+template <typename T> 
+int Vector<T>::capacity() const
+{
+  return storage;
+} // capacity()
+
+
+template <typename T> 
+int Vector<T>::size() const
+{
+  return count;
+} // size()
+
+
+template <typename T>
+ostream& operator<<(ostream& os, const Vector<T>& vector)
+{
+  for(int i = 0; i < vector.size(); i++) os << vector.array[i];
+  
+  return os;
+} // operator << 
+
+
+template <typename T>
+Vector<T>::Vector() : storage( 0 ), count( 0 ), array(NULL)
+{
+} // Vector() default
+
+
+template <typename T>
+Vector<T>::~Vector()
+{
+  if(array)
+    delete [] array;
+} // ~Vector()
+
+
+template <typename T>
+Vector<T>::Vector(const T* arr)
+{
+  for(count = 0; arr[count] != '\0'; count++);
+  
+  storage = count;
+  array = new T[storage];
+
+  for(int i = 0; i < count; i++)
+    array[i] = arr[i];
+} // Vector(arr) standard
+
+
+template <typename T>
+Vector<T>& Vector<T>::operator=(const Vector<T>& vector)
+{
+  if(this != &vector)
+  {
+    count = vector.size();
+    storage = vector.capacity();
+    
+    if(array)
+      delete [] array;
+    
+    array = new T[storage];
+    
+    for(int i = 0; i < count; i++)
+      array[i] = vector.array[i];
+  } // if it is not assigning itself
+  
+  return *this;
+} // Vector<T>::operator=()
+
+
+template <typename T>
+Vector<T>& Vector<T>::operator+=(const Vector<T>& vector)
+{
+  int changedLength = vector.size();
+  int newCount = count + changedLength;
+  
+  if(newCount > storage && newCount < TWO * storage)
+    storage *= TWO;
+  else // storage is two times more bigger
+    if (newCount > TWO * storage)
+      storage = newCount;
+  
+  T* temp = new T[storage];
+  int i;
+
+  for(i = 0; i < count; i++)
+  	temp[i] = array[i];
+
+  for(i = count; i < newCount; i++)
+    temp[i] = vector.array[i - count];
+
+  if(array)
+    delete [] array;
+
+  array = temp;
+  count = newCount;
+  return *this;
+} // Vector<T>::operator+=()
+
+
+template <typename T>
+size_t Vector<T>::find(const Vector<T>& vector) const
+{
+  int i, j; bool found;
+  
+  if(vector.size() <= count) // if the one to be finded is legal, not longer
+    for(i = 0; i < count - vector.size() + 1; i++)
+    {
+      found = true;
+      
+      for(j = 0; j < vector.size(); j++)
+        if (array[i + j] != vector.array[j])
+        {
+          found = false;
+          break;
+        } // fi
+      
+      if(found)
+        return (size_t) i;
+    } // nested loop
+  
+  return (size_t) ERROR;
+} // find()
+
+
+template <typename T>
+Vector<T> Vector<T>::substr(int start, int length) const
+{
+  Vector<T> temp;
+  temp.count = length;
+  temp.storage = length;
+  temp.array = new T[temp.storage];
+  
+  for(int i = 0; i < temp.count; i++)
+    temp.array[i] = array[i + start];
+  
+  return temp;
+} // substr()
+
+
+template <typename T>
+Vector<T>::Vector(const Vector<T>& vector) :
+  storage(vector.capacity()), count(vector.size())
+{
+  array = new T[vector.capacity()];
+  
+  for(int i = 0; i < vector.size(); i++)
+    array[i] = vector.array[i];
+} // Vector() copy
+
+
+template <typename T>
+Vector<T>& Vector<T>::insert(int start, const Vector<T>& vector)
+{
+  int newCount = count + vector.size();
+  
+  if(newCount > storage && newCount < TWO * storage)
+    storage *= TWO;
+  else // storage is two times more bigger
+    if (newCount > TWO * storage)
+      storage = newCount;
+  
+  T* temp = new T[storage];
+  
+  for(int i = 0; i < count; i++)
+    temp[i] = array[i];
+  
+  delete [] array;
+  array = temp;
+  
+  for(int i = newCount - 1; i > start - 1; i--)
+    array[i] = array[i - vector.size()];
+  
+  for(int i = 0; i < vector.size(); i++)
+    array[i + start] = vector.array[i];
+  
+  count = newCount; return *this;
+} // insert()
+
+
+template <typename T> Vector<T>& Vector<T>::replace
+(int start, int length, const Vector<T>& vector, int subStart, int subLength)
+{
+  int newCount = count - length + subLength;
+  
+  if (newCount <= count)
+  {
+    for(int i = start + subLength; i < newCount; i++)
+      array[i] = array[i + subLength];
+    
+  } // if it is shrink
+  else // if it is not shrink
+  {
+    if(newCount > storage && newCount < TWO * storage)
+      storage *= TWO;
+    else // storage is two times more bigger
+      if (newCount > TWO * storage)
+        storage = newCount;
+    
+    T* temp = new T[storage];
+    
+    for(int i = 0; i < count; i++) temp[i] = array[i];
+    
+    delete [] array; array = temp;
+    
+    for(int i = newCount - 1; i > start + subLength - 1; i--)
+      array[i] = array[i - (subLength - length)];
+
+  } // it is not shrink
+
+  for(int i = 0; i < subLength; i++)
+    array[i + start] = vector.array[i + subStart];
+
+  count = newCount; return *this;
+} // replace()
+
+
+template <typename T> 
+VectorIterator<T>::VectorIterator(const Vector<T>* vecPt, int pos)
+  : vectorPtr(vecPt), position(pos)
+{
+} // VectorIterator()
+
+
+template <typename T>
+ReverseVectorIterator<T>::ReverseVectorIterator(const Vector<T>* vecPt, int pos)
+  : vectorPtr(vecPt), position(pos)
+{
+} // ReverseVectorIterator()
+
+
+template <typename T> 
+VectorIterator<T> Vector<T>::end() const
+{
+  return VectorIterator<T>(this, ERROR);
+} // end()
+
+
+template <typename T> 
+VectorIterator<T> Vector<T>::begin() const
+{
+  return VectorIterator<T>(this, 0);
+} // begin()
+
+
+template <typename T>
+ReverseVectorIterator<T> Vector<T>::rend() const
+{
+  return ReverseVectorIterator<T>(this, ERROR);
+} // rend()
+
+
+template <typename T>
+ReverseVectorIterator<T> Vector<T>::rbegin() const
+{
+  return ReverseVectorIterator<T>(this, count - 1);
+} // rbegin()
+
+
+template <typename T> 
+VectorIterator<T>& VectorIterator<T>::operator++(int)
+{
+  if(position < vectorPtr->size() - 1)
+    position++;
+  else // at the end
+    position = Vector<T>::ERROR;
+  
+  return *this;
+} // VectorIterator<T>::operator++()
+
+
+template <typename T>
+ReverseVectorIterator<T>& ReverseVectorIterator<T>::operator++(int)
+{
+  position--; // if it at zero, it will be minus one next
+  return *this;
+} // ReverseVectorIterator<T>::operator++()
+
+
+template <typename T> 
+bool VectorIterator<T>::operator!=(const VectorIterator<T>& rhs) const
+{
+  return(vectorPtr != rhs.vectorPtr || position != rhs.position);
+} // VectorIterator<T>::operator!=()
+
+
+template <typename T>
+bool ReverseVectorIterator<T>::operator!=
+  (const ReverseVectorIterator<T>& rhs) const
+{
+  return(vectorPtr != rhs.vectorPtr || position != rhs.position);
+} // ReverseVectorIterator<T>::operator!=()
+
+
+template <typename T>
+const T& VectorIterator<T>::operator*() const
+{
+  return vectorPtr->array[position];
+} // VectorIterator<T>::operator*()
+
+
+template <typename T>
+const T& ReverseVectorIterator<T>::operator*() const
+{
+  return vectorPtr->array[position];
+} // ReverseVectorIterator<T>::operator*()
+// Author: Steven Li
+
+#ifndef VECTOR_H
+#define VECTOR_H
+
+#include <iostream>
+using namespace std;
+
+
+template <typename T> 
+class Vector;
+
+
+template <typename T> 
+class VectorIterator
+{
+private:
+  const Vector<T>* vectorPtr;
+  int position;
+public:
+  VectorIterator(const Vector<T>* vecPt = NULL, int pos = 0);
+  VectorIterator<T>& operator++(int);
+  bool operator!=(const VectorIterator<T>& rhs) const;
+  const T& operator*() const;
+}; // VectorIterator
+
+
+template <typename T>
+class ReverseVectorIterator
+{
+private:
+  const Vector<T>* vectorPtr;
+  int position;
+public:
+  ReverseVectorIterator(const Vector<T>* vecPt = NULL, int pos = 0);
+  ReverseVectorIterator<T>& operator++(int);
+  bool operator!=(const ReverseVectorIterator<T>& rhs) const;
+  const T& operator*() const;
+}; //ReverseVectorIterator
+
+
+template <typename T>
+ostream& operator<< (ostream& os, const Vector<T>& vector);
+
+
+template <typename T> 
+class Vector
+{
+private:
+  int storage;
+  int count;
+  T* array;
+public:
+  static const int TWO = 2;
+  static const int ERROR = -1;
+  
+  Vector();
+  Vector(const T* arr);
+  Vector(const Vector<T>& vector);
+  ~Vector();
+  
+  friend VectorIterator<T>;
+  friend ReverseVectorIterator<T>;
+  friend ostream& operator<< <T>(ostream& os, const Vector<T>& vector);
+  
+  int capacity() const;
+  int size() const;
+  Vector<T>& operator=(const Vector<T>& vector);
+  Vector<T>& operator+=(const Vector<T>& vector);
+  size_t find(const Vector<T>& vector) const;
+  Vector<T> substr(int start, int length) const;
+  Vector<T>& insert(int start, const Vector<T>& vector);
+  Vector<T>& replace(int start, int length, const Vector<T>& vector,
+                     int subStart, int subLength);
+  
+  typedef VectorIterator<T> iterator;
+  VectorIterator<T> end() const;
+  VectorIterator<T> begin() const;
+  
+  typedef ReverseVectorIterator<T> reverse_iterator;
+  ReverseVectorIterator<T> rend() const;
+  ReverseVectorIterator<T> rbegin() const;
+}; // class Vector
+
+
+#include "vector.cpp"
+#endif // VECTOR_H
+
+// Steven Li
+
+#include <map>
+#include <set>
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <algorithm>
+#include <iomanip>
+
+using namespace std;
+
+void initializeLetterMap(map<char, int>& letterMap);
+void initializeWordMap(map<string, int>& wordMap, const
+                       map<char, int>& letterMap);
+int noSpaceScramble(string& line, set<string>& result, const
+                    map<string, int>& wordMap);
+int spaceScramble(string& line, set<string>& result, const map<string,
+                  int>& wordMap, const map<char, int>& letterMap);
+void printResult(string& line, const set<string>& result, int sum);
+int insertSet(string& line, string& tempLine, set<string>& result, const
+              map<string, int>& wordMap, const map<char, int>& letterMap,
+              int temp, int occurrence, int i);
+
+int main(int argc, const char * argv[])
+{
+  typedef map<char, int> LetterMap;
+  LetterMap letterMap;
+  initializeLetterMap(letterMap);
+  typedef map<string, int> WordMap;
+  WordMap wordMap;
+  initializeWordMap(wordMap, letterMap);
+  set<string> result;
+  ifstream inf(argv[1]); string line, tempLine; int sum = 0;
+  
+  while(getline(inf, line, '\n'))
+  {
+    tempLine = line;
+    
+    if(line.length() <= 7 && line.find(" ") == string::npos)
+      sum = noSpaceScramble(line, result, wordMap);
+    else // if it has space
+      if(line.length() <= 7 && line.find(" ") != string::npos)
+        sum = spaceScramble(line, result, wordMap, letterMap);
+    
+    printResult(tempLine, result, sum);
+    result.clear();
+  } // while loop
+
+  inf.close();
+  return 0;
+} // main()
+
+
+void initializeLetterMap(map<char, int>& letterMap)
+{
+  int letterValueArr[26] = {1, 3, 3, 2, 1, 4, 2, 4, 2, 8, 5, 1, 3,
+    1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};
+  
+  for(int i = 0; i < 26; i++)
+    letterMap.insert(pair<char, int>('a' + i, *(letterValueArr + i)));
+} // initializeLetterMap()
+
+
+void initializeWordMap(map<string, int>& wordMap, const
+                       map<char, int>& letterMap)
+{
+  ifstream inf("words.txt"); string line;
+  bool isValidWord; string::iterator sitr; int sum;
+  
+  while(getline(inf, line, '\n'))
+  {
+    isValidWord = true;
+    
+    if(line.length() > 7 || line.find_first_not_of("abcdefghijklmnopqrstuvwxyz")
+       != string::npos) isValidWord = false;
+    
+    if(isValidWord)
+    {
+      sum = 0;
+      
+      for(sitr = line.begin(); sitr != line.end(); sitr++)
+        sum += letterMap.find(*sitr)->second;
+      
+      wordMap.insert(pair<string, int> (line, sum));
+    } // if valid
+  } // while loop
+    
+  inf.close();
+} // initializeWordMap()
+
+
+int noSpaceScramble(string& line, set<string>& result, const
+                    map<string, int>& wordMap)
+{
+  sort(line.begin(), line.end());
+  string tempLine; int temp = 0;
+  
+  do
+  {
+    tempLine = line;
+    
+    for(int i = (int)tempLine.length(); i > 0; i = (int)tempLine.length())
+    {
+      if(wordMap.find(tempLine) != wordMap.end())
+      {
+        if(wordMap.find(tempLine)->second > temp)
+        {
+          result.clear();
+          result.insert(tempLine);
+          temp = wordMap.find(tempLine)->second;
+        } // if it should be updated
+        
+        if(wordMap.find(tempLine)->second == temp && result.find(tempLine)
+           == result.end()) result.insert(tempLine);
+      } // if substring
+      
+      tempLine = tempLine.substr(0, tempLine.length() - 1);
+    } // for loop
+  } while (next_permutation(line.begin(), line.end())); // do while
+  
+  return temp;
+} // noSpaceScramble()
+
+
+int spaceScramble(string& line, set<string>& result, const map <string,
+                  int>& wordMap, const map<char, int>& letterMap)
+{
+  string lineFreeze = line, tempLine; int temp = 0, occurrence;
+  
+  for(int i = 0 ; i < 26 ; i++)
+  {
+    replace(line.begin(), line.end(), ' ', (char)('a' + i));
+    sort(line.begin(), line.end());
+    occurrence = (int) count(line.begin(), line.end(), (char)('a' + i));
+    
+    do
+    {
+      tempLine = line;
+      
+      for(int j = (int)tempLine.length(); j > 0; j = (int)tempLine.length())
+      {
+        if(wordMap.find(tempLine) != wordMap.end())
+          temp = insertSet(line, tempLine, result, wordMap, letterMap, temp,
+                           occurrence, i);
+        
+        tempLine = tempLine.substr(0, tempLine.length() - 1);
+      } // for loop
+    } while (next_permutation(line.begin(), line.end())); // do while
+    
+    line = lineFreeze;
+  } // for loop
+  
+  return temp;
+} // spaceScramble()
+
+
+int insertSet(string& line, string& tempLine, set<string>& result, const
+              map<string, int>& wordMap, const map<char, int>& letterMap,
+              int temp, int occurrence, int i)
+{
+  int sum = wordMap.find(tempLine)->second;
+  
+  if((int) count(line.begin(), line.end(), (char)('a' + i))
+     == occurrence) sum -= letterMap.find((char)('a' + i))->second;
+  
+  if(sum > temp)
+    result.clear(); result.insert(tempLine); temp = sum;
+  
+  if(sum  == temp && result.find(tempLine) == result.end())
+    result.insert(tempLine);
+  
+  return temp;
+} // isertSet()
+
+
+void printResult(string& line, const set<string>& result, int sum)
+{
+  set<string>::iterator itr;
+  
+  if(sum)
+    cout << setw(2) << sum << " " << line << ":";
+  else // seg fault
+    cout << setw(2) << 0 << " " << line << ":";
+  
+  for(itr = result.begin(); itr != result.end(); itr++)
+    cout << " " << *itr;
+  
+  if(result.empty())
+    cout << " No words found.";
+  
+  cout << endl;
+} // printResult()
+//author: Steven Li
+
+#include "BinarySearchTree.h"
+#include <cassert>
+using namespace std;
+
+template <typename T>
+void BinarySearchTree<T>::insert(const T &value)
+{
+  if(root)
+    insert(root, value);
+  else // root is not NULL
+    root = new BSTNode<T>(value, NULL, NULL);
+} // insert()
+
+template <typename T>
+void BinarySearchTree<T>::find(const T &value) const
+{
+  assert(root != NULL);
+  BSTNode<T>* result = find(root, value);
+  
+  if(!result) // not found
+    cout << "Not found." << endl;
+  else // found
+    cout << "Found." << endl;
+} // find()
+
+template <typename T>
+void BinarySearchTree<T>::remove(const T &value)
+{
+  assert(root);
+//  BSTNode<T>* result = find(root, value);
+//  assert(result != NULL);
+//  
+//  if(!result)
+//  {
+//    cout << "Not found." << endl;
+//    return;
+//  } // not found
+//  
+  remove(root, value);
+} // remove()
+
+template <typename T>
+void BinarySearchTree<T>::inOrder() const
+{
+  inOrder(root);
+  cout << endl;
+} // inOrder
+
+template <typename T>
+void BinarySearchTree<T>::postOrder() const
+{
+  postOrder(root);
+  cout << endl;
+} // postOrder
+
+template <typename T>
+void BinarySearchTree<T>::insert(BSTNode<T> *t, const T &value)
+{
+  if(t->data < value)
+  {
+    if(!t->right)
+      t->right = new BSTNode<T>(value, NULL, NULL);
+    else // not null
+      insert(t->right, value);
+  } // right
+  else // left
+    if(value < t->data)
+    {
+      if(!t->left)
+        t->left = new BSTNode<T>(value, NULL, NULL);
+      else // not null
+        insert(t->left, value);
+    } // left
+  else // equal
+  {
+    cout << "Found duplicate." << endl;
+    assert(value < t->data || t->data < value);
+  } // duplicate
+
+} // recursive insert()
+
+template <typename T>
+BSTNode<T>* BinarySearchTree<T>::find(BSTNode<T>* t, const T &value) const
+{
+  if(!t)
+    return NULL;
+  else // no equal left
+    if(value < t->data)
+      t = find(t->left, value);
+  else // not equal right
+    if(t->data < value)
+      t = find(t->right, value);
+  
+  return t;
+} // recursive find()
+
+
+template <typename T>
+void BinarySearchTree<T>::remove(BSTNode<T> * &t, const T &value)
+{
+  assert(t != NULL);
+  
+  if(!t)
+  {
+    cout << "Not found." << endl; return;
+  } // t is NULL
+  
+  if(value < t->data) remove(t->left, value);
+  else // no children
+    if (t->data < value) remove(t->right, value);
+    else // no children
+      if(!t->left && !t->right)
+      {
+        delete t; t = NULL;
+      } // no children
+      else // one left is children
+        if(!t->left && t->right)
+        {
+          BSTNode<T>* temp = t; t = t->right; delete temp;
+        } // one left is children
+        else // one right is children
+          if(t->left && !t->right)
+          {
+            BSTNode<T>* temp = t; t = t->left; delete temp;
+          } // one right is children
+          else // two children
+            if(t->left && t->right)
+            {
+              BSTNode<T>* temp = findMin(t->right); T foo = temp->data;
+              remove(t, temp->data); t->data = foo;
+            } // two children
+  
+} // recursive remove()
+
+
+template <typename T>
+void BinarySearchTree<T>::inOrder(BSTNode<T> *t) const
+{
+  if(!t) // t is NULL
+    return;
+  
+  inOrder(t->left);
+  cout << t->data << ", ";
+  inOrder(t->right);
+} // recursive inOrder
+
+template <typename T>
+void BinarySearchTree<T>::postOrder(BSTNode<T> *t) const
+{
+  if(!t) // t is NULL
+    return;
+  
+  postOrder(t->left);
+  postOrder(t->right);
+  cout << t->data << ", ";
+} // recursive postOrder
+
+template <typename T>
+void BinarySearchTree<T>::makeEmpty(BSTNode<T> *t)
+{
+  if(!t) // t is NULL
+    return;
+  
+  makeEmpty(t->left);
+  makeEmpty(t->right);
+  delete t;
+} // makeEmpty()
+
+template <typename T>
+BinarySearchTree<T>::~BinarySearchTree()
+{
+  makeEmpty(root);
+} //~BinarySearchTree()
+
+
+template <typename T>
+BSTNode<T>* BinarySearchTree<T>::findMin(BSTNode<T> *t) const
+{
+  if(!t->left)
+    return t;
+  
+  t = findMin(t->left);
+  return t;
+} // findMin()
+
+// Author: Sean Davis 
+
+//#include <iostream>
+#include <fstream>
+#include "BinarySearchTree.h"
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+  BinarySearchTree<int> tree;
+  ifstream inf(argv[1]);
+  char operation;
+  int value;
+  
+  while(inf >> operation >> value)
+  {
+    switch(operation)
+    {
+      case 'I' : tree.insert(value); break;
+      case 'R' : tree.remove(value); break;
+      case 'F' : tree.find(value); break;
+      case 'i' : tree.inOrder(); break;
+      case 'p' : tree.postOrder(); break;
+    }  // switch()
+    
+    inf.ignore(100, '\n');
+  } // while more in file
+  
+  return 0;
+} // main())
+
+// author: Steven Li
+
+#include <iostream>
+#ifndef BINARYSEARCHTREE_H
+#define BINARYSEARCHTREE_H
+
+template <typename T>
+class BinarySearchTree;
+
+
+template <typename T>
+class BSTNode
+{
+  friend BinarySearchTree<T>;
+  T data;
+  BSTNode* left;
+  BSTNode* right;
+  BSTNode(T dat, BSTNode* lef, BSTNode* ri): data(dat), left(lef), right(ri){}
+}; // class BSTNode
+
+
+template <typename T>
+class BinarySearchTree
+{
+  BSTNode<T>* root;
+  void insert(BSTNode<T> *t, const T &value);
+  BSTNode<T>* find(BSTNode<T>* t, const T &value) const;
+  void remove(BSTNode<T> * &t, const T &value);
+  void inOrder(BSTNode<T> *t) const;
+  void postOrder(BSTNode<T> *t) const;
+  void makeEmpty(BSTNode<T> *t);
+  BSTNode<T>* findMin(BSTNode<T> *t) const;
+public:
+  BinarySearchTree():root(NULL){};
+  ~BinarySearchTree();
+  
+  void insert(const T& value);
+  void find(const T& value) const;
+  void remove(const T& value);
+  void inOrder() const;
+  void postOrder() const;
+  
+}; // class BinarySearchTree
+
+
+#include "BinarySearchTree.cpp"
+#endif // BinarySearchTree_h
