@@ -10,7 +10,7 @@ do
 	case $arg in
 		*.tar.gz) tar -xzf $arg ;;
 		*.tgz) tar -xzf $arg ;;
-                *.gz) gzip -d $arg ;;
+        *.gz) gzip -d $arg ;;
 		*.tar) tar xopf  $arg ;;
 		*.zip) unzip -q $arg ;;
 		*) echo "uncomp.sh: $arg has no compression extension."

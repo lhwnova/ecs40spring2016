@@ -44,12 +44,13 @@ void List<T>::insert(T data)
 template <class T>
 const T List<T>::find(const ListNode<T> *ptr, const string &foodName) const
 {
-  for(ptr = head; ptr && (foodName < ptr->data->getName()); ptr = ptr->next);
+  if(ptr == NULL)
+    return NULL;
   
   if(ptr->data->getName() == foodName)
     return ptr->data;
-  else
-    return NULL;
+  
+  return find(ptr->next, foodName);
 }
 
 template <class T>
